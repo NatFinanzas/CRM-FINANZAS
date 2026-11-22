@@ -34,11 +34,7 @@
       --bottom-nav-h: 64px;
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -53,11 +49,44 @@
       letter-spacing: -0.02em;
     }
 
-    /* Layout Shell */
-    .app-shell {
-      display: flex;
+    /* Lock Screen */
+    .lock-screen {
       min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background: linear-gradient(160deg, #eef4fa 0%, #f8fafc 55%, #e6f4f1 100%);
     }
+
+    .lock-card {
+      width: 100%;
+      max-width: 410px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 28px 24px;
+      box-shadow: var(--shadow-md);
+    }
+
+    .lock-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .lock-error {
+      margin-top: 10px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--danger);
+      min-height: 18px;
+    }
+
+    /* Layout Shell */
+    .app-shell { display: none; min-height: 100vh; }
+    .app-shell.unlocked { display: flex; }
 
     /* Sidebar (Desktop) */
     .sidebar {
@@ -94,17 +123,8 @@
       flex-shrink: 0;
     }
 
-    .brand-title {
-      font-size: 16px;
-      font-weight: 700;
-      color: var(--text-main);
-    }
-
-    .brand-sub {
-      font-size: 11px;
-      color: var(--text-muted);
-      font-weight: 500;
-    }
+    .brand-title { font-size: 16px; font-weight: 700; color: var(--text-main); }
+    .brand-sub { font-size: 11px; color: var(--text-muted); font-weight: 500; }
 
     .nav-list {
       padding: 14px 12px;
@@ -132,22 +152,17 @@
       transition: all 0.15s ease;
     }
 
-    .nav-btn:hover {
-      background: var(--bg-subtle);
-      color: var(--text-main);
-    }
-
-    .nav-btn.active {
-      background: var(--primary-soft);
-      color: var(--primary);
-      font-weight: 600;
-    }
+    .nav-btn:hover { background: var(--bg-subtle); color: var(--text-main); }
+    .nav-btn.active { background: var(--primary-soft); color: var(--primary); font-weight: 600; }
 
     .sidebar-footer {
       padding: 14px 16px;
       border-top: 1px solid var(--border);
       font-size: 12px;
       color: var(--text-muted);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
     }
 
     .status-pill {
@@ -158,22 +173,12 @@
       border-radius: 999px;
       font-size: 11px;
       font-weight: 600;
-      background: var(--bg-subtle);
-      color: var(--text-muted);
-      margin-bottom: 6px;
-    }
-
-    .status-pill.live {
       background: var(--success-soft);
       color: var(--success);
+      width: fit-content;
     }
 
-    .dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: currentColor;
-    }
+    .dot { width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
 
     /* Main Content */
     .main-wrap {
@@ -199,21 +204,9 @@
       flex-wrap: wrap;
     }
 
-    .page-title {
-      font-size: 20px;
-      font-weight: 700;
-    }
-
-    .page-subtitle {
-      font-size: 12px;
-      color: var(--text-muted);
-    }
-
-    .topbar-actions {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
+    .page-title { font-size: 20px; font-weight: 700; }
+    .page-subtitle { font-size: 12px; color: var(--text-muted); }
+    .topbar-actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
 
     .content {
       padding: 24px 28px 40px;
@@ -239,14 +232,9 @@
       text-decoration: none;
     }
 
-    .btn-primary {
-      background: var(--primary);
-      color: #fff;
-    }
-
-    .btn-primary:hover {
-      background: var(--primary-hover);
-    }
+    .btn:disabled { opacity: 0.6; cursor: not-allowed; }
+    .btn-primary { background: var(--primary); color: #fff; }
+    .btn-primary:hover:not(:disabled) { background: var(--primary-hover); }
 
     .btn-secondary {
       background: var(--bg-surface);
@@ -255,14 +243,8 @@
       box-shadow: var(--shadow-sm);
     }
 
-    .btn-secondary:hover {
-      background: var(--bg-subtle);
-    }
-
-    .btn-sm {
-      padding: 6px 10px;
-      font-size: 12px;
-    }
+    .btn-secondary:hover:not(:disabled) { background: var(--bg-subtle); }
+    .btn-sm { padding: 6px 10px; font-size: 12px; }
 
     .badge {
       display: inline-flex;
@@ -305,17 +287,8 @@
       margin-bottom: 8px;
     }
 
-    .kpi-value {
-      font-size: 24px;
-      font-weight: 700;
-      color: var(--text-main);
-      margin-bottom: 4px;
-    }
-
-    .kpi-meta {
-      font-size: 12px;
-      color: var(--text-muted);
-    }
+    .kpi-value { font-size: 24px; font-weight: 700; color: var(--text-main); margin-bottom: 4px; }
+    .kpi-meta { font-size: 12px; color: var(--text-muted); }
 
     /* Cards & Tables */
     .grid-2 {
@@ -344,25 +317,11 @@
       flex-wrap: wrap;
     }
 
-    .card-title {
-      font-size: 15px;
-      font-weight: 700;
-    }
+    .card-title { font-size: 15px; font-weight: 700; }
+    .card-body { padding: 18px 20px; }
+    .table-wrap { width: 100%; overflow-x: auto; }
 
-    .card-body {
-      padding: 18px 20px;
-    }
-
-    .table-wrap {
-      width: 100%;
-      overflow-x: auto;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 13px;
-    }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
 
     th {
       text-align: left;
@@ -377,33 +336,14 @@
       white-space: nowrap;
     }
 
-    td {
-      padding: 12px 14px;
-      border-bottom: 1px solid var(--border);
-      vertical-align: middle;
-    }
+    td { padding: 12px 14px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+    tr:last-child td { border-bottom: 0; }
+    tr:hover td { background: #f8fafc; }
 
-    tr:last-child td {
-      border-bottom: 0;
-    }
-
-    tr:hover td {
-      background: #f8fafc;
-    }
-
-    .num {
-      text-align: right;
-      font-variant-numeric: tabular-nums;
-      white-space: nowrap;
-    }
+    .num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
 
     /* Controls & Forms */
-    .filters-row {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-bottom: 16px;
-    }
+    .filters-row { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 16px; }
 
     .input, select, textarea {
       width: 100%;
@@ -422,39 +362,15 @@
     }
 
     .filters-row .input,
-    .filters-row select {
-      width: auto;
-      min-width: 180px;
-    }
+    .filters-row select { width: auto; min-width: 180px; }
 
-    .form-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 14px;
-    }
-
-    .form-group {
-      display: flex;
-      flex-direction: column;
-      gap: 5px;
-    }
-
-    .form-group.full {
-      grid-column: 1 / -1;
-    }
-
-    label {
-      font-size: 12px;
-      font-weight: 600;
-      color: var(--text-main);
-    }
+    .form-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+    .form-group { display: flex; flex-direction: column; gap: 5px; }
+    .form-group.full { grid-column: 1 / -1; }
+    label { font-size: 12px; font-weight: 600; color: var(--text-main); }
 
     /* Client Cards */
-    .client-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 16px;
-    }
+    .client-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
 
     .client-card {
       background: var(--bg-surface);
@@ -476,23 +392,9 @@
       border-color: #cbd5e1;
     }
 
-    .client-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 10px;
-    }
-
-    .client-name {
-      font-size: 16px;
-      font-weight: 700;
-    }
-
-    .client-comitente {
-      font-size: 12px;
-      color: var(--text-muted);
-      font-weight: 500;
-    }
+    .client-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
+    .client-name { font-size: 16px; font-weight: 700; }
+    .client-comitente { font-size: 12px; color: var(--text-muted); font-weight: 500; }
 
     .client-metrics {
       display: grid;
@@ -503,17 +405,10 @@
       border-radius: var(--radius-sm);
     }
 
-    .metric-mini-label {
-      font-size: 11px;
-      color: var(--text-muted);
-    }
+    .metric-mini-label { font-size: 11px; color: var(--text-muted); }
+    .metric-mini-val { font-size: 14px; font-weight: 700; }
 
-    .metric-mini-val {
-      font-size: 14px;
-      font-weight: 700;
-    }
-
-    /* Modal / Drawer */
+    /* Modal */
     .modal-backdrop {
       position: fixed;
       inset: 0;
@@ -525,9 +420,7 @@
       z-index: 60;
     }
 
-    .modal-backdrop.open {
-      display: flex;
-    }
+    .modal-backdrop.open { display: flex; }
 
     .modal {
       background: var(--bg-surface);
@@ -551,9 +444,7 @@
       z-index: 2;
     }
 
-    .modal-body {
-      padding: 20px 22px;
-    }
+    .modal-body { padding: 20px 22px; }
 
     .close-btn {
       border: 0;
@@ -585,15 +476,10 @@
       pointer-events: none;
     }
 
-    .toast.show {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    .toast.show { opacity: 1; transform: translateY(0); }
 
     /* Bottom Nav (Mobile) */
-    .bottom-nav {
-      display: none;
-    }
+    .bottom-nav { display: none; }
 
     @media (max-width: 1024px) {
       .kpi-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -638,16 +524,55 @@
         cursor: pointer;
       }
 
-      .bottom-nav button.active {
-        color: var(--primary);
-        background: var(--primary-soft);
-      }
+      .bottom-nav button.active { color: var(--primary); background: var(--primary-soft); }
     }
   </style>
 </head>
 <body>
-  <div class="app-shell">
-    <!-- Sidebar -->
+  <!-- Pantalla de Acceso Validada en Servidor (compatible con Llavero de iCloud) -->
+  <div id="lockScreen" class="lock-screen">
+    <div class="lock-card">
+      <div class="lock-header">
+        <div class="brand-logo">NF</div>
+        <div>
+          <div class="brand-title">CRM Carteras</div>
+          <div class="brand-sub">Acceso Privado de Asesor</div>
+        </div>
+      </div>
+
+      <form id="unlockForm" onsubmit="handleUnlock(event)">
+        <div class="form-group" style="margin-bottom:12px;">
+          <label for="crmPassword">Contraseña</label>
+          <input
+            id="crmPassword"
+            name="password"
+            class="input"
+            type="password"
+            autocomplete="current-password"
+            required
+            placeholder="Ingresá tu clave"
+          />
+        </div>
+
+        <div id="endpointSetupGroup" class="form-group" style="margin-bottom:14px;">
+          <label for="loginWebhookUrl">URL de Apps Script (se guarda en este dispositivo)</label>
+          <input
+            id="loginWebhookUrl"
+            class="input"
+            type="url"
+            required
+            placeholder="https://script.google.com/macros/s/.../exec"
+          />
+        </div>
+
+        <button id="unlockBtn" type="submit" class="btn btn-primary" style="width:100%;">Ingresar al CRM</button>
+        <div id="lockError" class="lock-error"></div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Aplicación Principal -->
+  <div id="appShell" class="app-shell">
     <aside class="sidebar">
       <div class="brand">
         <div class="brand-logo">NF</div>
@@ -676,15 +601,15 @@
       </nav>
 
       <div class="sidebar-footer">
-        <div id="syncBadge" class="status-pill">
+        <div class="status-pill">
           <span class="dot"></span>
-          <span id="syncText">Modo Demo Local</span>
+          <span>Autenticado en Servidor</span>
         </div>
         <div>Base sin tope de clientes</div>
+        <button class="btn btn-secondary btn-sm" style="margin-top:4px;" onclick="lockCrm()">Cerrar Sesión</button>
       </div>
     </aside>
 
-    <!-- Main Area -->
     <div class="main-wrap">
       <header class="topbar">
         <div>
@@ -692,11 +617,14 @@
           <div id="pageSubtitle" class="page-subtitle">Control diario de LECAPs, rentas, amortizaciones y liquidez</div>
         </div>
         <div class="topbar-actions">
-          <button class="btn btn-secondary btn-sm" onclick="syncFromBackend()" title="Sincronizar con Google Apps Script">
+          <button class="btn btn-secondary btn-sm" onclick="syncFromBackend()" title="Sincronizar con Google Sheets">
             Actualizar
           </button>
           <button class="btn btn-primary btn-sm" onclick="openQuickTicketModal()">
             + Nuevo Boleto
+          </button>
+          <button class="btn btn-secondary btn-sm" onclick="lockCrm()">
+            Salir
           </button>
         </div>
       </header>
@@ -804,12 +732,12 @@
           </div>
         </section>
 
-        <!-- VIEW 3: OPERACIONES / CARGA DE BOLETO -->
+        <!-- VIEW 3: OPERACIONES -->
         <section id="view-operaciones" class="view-section" style="display:none;">
           <div class="card">
             <div class="card-header">
               <div class="card-title">Carga Rápida de Boleto de Operación</div>
-              <span class="badge badge-info">Actualiza tenencias al instante</span>
+              <span class="badge badge-info">Sincronizado con Google Sheets</span>
             </div>
             <div class="card-body">
               <form id="ticketForm" class="form-grid" onsubmit="handleTicketSubmit(event)">
@@ -935,22 +863,25 @@
         <section id="view-conexion" class="view-section" style="display:none;">
           <div class="card">
             <div class="card-header">
-              <div class="card-title">Conexión con Google Apps Script (Base + Bot de Telegram)</div>
+              <div class="card-title">Bot de Telegram & Endpoint de Google Apps Script</div>
             </div>
             <div class="card-body">
               <p style="font-size:13px; color:var(--text-muted); margin-bottom:14px;">
-                Pega aquí la URL de implementación (Web App) de tu Google Apps Script. Mientras esté vacía, el sistema funciona en modo local con datos de muestra para que pruebes todas las pantallas.
+                Tu contraseña y los datos de tus clientes se validan directamente en Google Apps Script. Nunca se almacenan en el código público de GitHub.
               </p>
               <div class="form-grid" style="margin-bottom:14px;">
                 <div class="form-group full">
                   <label for="webhookUrlInput">URL de Google Apps Script (Web App)</label>
-                  <input id="webhookUrlInput" class="input" type="url" placeholder="https://script.google.com/macros/s/.../exec" />
+                  <input id="webhookUrlInput" class="input" type="url" />
                 </div>
               </div>
-              <div style="display:flex; gap:10px; flex-wrap:wrap;">
-                <button class="btn btn-primary" onclick="saveWebhookUrl()">Guardar Conexión</button>
-                <button class="btn btn-secondary" onclick="syncFromBackend()">Probar Lectura (GET)</button>
-                <button class="btn btn-secondary" onclick="resetDemoData()">Restaurar Datos de Ejemplo</button>
+              <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:18px;">
+                <button class="btn btn-primary" onclick="updateEndpointUrl()">Actualizar URL</button>
+                <button class="btn btn-secondary" onclick="syncFromBackend()">Sincronizar Ahora</button>
+              </div>
+              <div style="background:#f8fafc; border:1px solid var(--border); border-radius:10px; padding:14px; font-size:13px;">
+                <strong>Formato rápido para enviarle boletos a tu Bot de Telegram:</strong><br/>
+                <code>104520 | Compra | S31E7 | 25000 | 1.24 | Boleto #910</code>
               </div>
             </div>
           </div>
@@ -967,7 +898,7 @@
     <button data-view="instrumentos" onclick="switchView('instrumentos')">Activos</button>
   </nav>
 
-  <!-- Modal Ficha Cliente -->
+  <!-- Modals -->
   <div id="clientModal" class="modal-backdrop" onclick="if(event.target===this) closeModal('clientModal')">
     <div class="modal">
       <div class="modal-header">
@@ -981,7 +912,6 @@
     </div>
   </div>
 
-  <!-- Modal Nuevo Cliente -->
   <div id="newClientModal" class="modal-backdrop" onclick="if(event.target===this) closeModal('newClientModal')">
     <div class="modal">
       <div class="modal-header">
@@ -1020,7 +950,7 @@
           </div>
           <div class="form-group full">
             <label>Notas de Seguimiento</label>
-            <input id="cliNotas" class="input" placeholder="Ej. Prefiere LECAPs cortas y rotar a CER si sube inflación" />
+            <input id="cliNotas" class="input" placeholder="Ej. Prefiere LECAPs cortas y rotar a CER" />
           </div>
           <div class="form-group full" style="flex-direction:row; justify-content:flex-end; gap:10px;">
             <button type="button" class="btn btn-secondary" onclick="closeModal('newClientModal')">Cancelar</button>
@@ -1031,7 +961,6 @@
     </div>
   </div>
 
-  <!-- Modal Nuevo Instrumento -->
   <div id="newInstrumentModal" class="modal-backdrop" onclick="if(event.target===this) closeModal('newInstrumentModal')">
     <div class="modal">
       <div class="modal-header">
@@ -1100,244 +1029,97 @@
   <div id="toast" class="toast"></div>
 
   <script>
-    const STORAGE_KEY = 'crm_financiero_state_v1';
-    const WEBHOOK_KEY = 'crm_financiero_webhook_url_v1';
+    const WEBHOOK_KEY = 'crm_financiero_webhook_url_v2';
+    const SESSION_PWD_KEY = 'crm_financiero_session_pwd_v2';
 
-    function addDaysISO(daysFromToday) {
-      const d = new Date();
-      d.setHours(12, 0, 0, 0);
-      d.setDate(d.getDate() + daysFromToday);
-      return d.toISOString().slice(0, 10);
-    }
-
-    function getSeedData() {
-      return {
-        clients: [
-          {
-            comitente: '104520',
-            nombre: 'Pepito',
-            perfil: 'Conservador',
-            whatsapp: '+5491155550101',
-            liqArs: 1450000,
-            liqUsd: 800,
-            notas: 'Avisar 5 días antes de vencer LECAPs para renovar o pasar a Money Market.'
-          },
-          {
-            comitente: '108934',
-            nombre: 'María G.',
-            perfil: 'Moderado',
-            whatsapp: '+5491155550102',
-            liqArs: 620000,
-            liqUsd: 2450,
-            notas: 'Interesada en rotar de tasa fija a CER si acelera inflación.'
-          },
-          {
-            comitente: '112305',
-            nombre: 'Carlos R.',
-            perfil: 'Agresivo',
-            whatsapp: '+5491155550103',
-            liqArs: 310000,
-            liqUsd: 1200,
-            notas: 'Reinvierte cupones de ONs en renta fija corta o dólares.'
-          }
-        ],
-        instruments: [
-          {
-            ticker: 'S31E7',
-            descripcion: 'LECAP Vto Enero 2027',
-            tipo: 'LECAP',
-            tasa: 'Tasa Fija',
-            moneda: 'ARS',
-            vto: addDaysISO(6),
-            cupon: '',
-            precio: 1.24
-          },
-          {
-            ticker: 'TX26',
-            descripcion: 'Bono del Tesoro CER 2026',
-            tipo: 'Bono CER',
-            tasa: 'CER / Variable',
-            moneda: 'ARS',
-            vto: addDaysISO(120),
-            cupon: addDaysISO(11),
-            precio: 1.68
-          },
-          {
-            ticker: 'AL30',
-            descripcion: 'Bono Soberano USD Ley Arg',
-            tipo: 'Bono Soberano',
-            tasa: 'Hard Dollar',
-            moneda: 'USD',
-            vto: addDaysISO(900),
-            cupon: addDaysISO(14),
-            precio: 0.68
-          },
-          {
-            ticker: 'YMCXO',
-            descripcion: 'ON YPF Clase XXIV USD',
-            tipo: 'ON',
-            tasa: 'Hard Dollar',
-            moneda: 'USD',
-            vto: addDaysISO(410),
-            cupon: addDaysISO(24),
-            precio: 1.03
-          },
-          {
-            ticker: 'BALANZ_MM',
-            descripcion: 'FCI Money Market Liquidez',
-            tipo: 'FCI',
-            tasa: 'Liquidez',
-            moneda: 'ARS',
-            vto: '',
-            cupon: '',
-            precio: 1.00
-          }
-        ],
-        operations: [
-          {
-            id: 'OP-101',
-            fecha: addDaysISO(-25),
-            comitente: '104520',
-            cliente: 'Pepito',
-            tipo: 'Compra',
-            ticker: 'S31E7',
-            nominales: 2500000,
-            precio: 1.19,
-            moneda: 'ARS',
-            origen: 'Bot Telegram',
-            nota: 'Boleto #4012'
-          },
-          {
-            id: 'OP-102',
-            fecha: addDaysISO(-18),
-            comitente: '108934',
-            cliente: 'María G.',
-            tipo: 'Compra',
-            ticker: 'TX26',
-            nominales: 900000,
-            precio: 1.61,
-            moneda: 'ARS',
-            origen: 'Manual',
-            nota: 'Posición CER'
-          },
-          {
-            id: 'OP-103',
-            fecha: addDaysISO(-40),
-            comitente: '108934',
-            cliente: 'María G.',
-            tipo: 'Compra',
-            ticker: 'AL30',
-            nominales: 4500,
-            precio: 0.65,
-            moneda: 'USD',
-            origen: 'Bot Telegram',
-            nota: 'Boleto #3980'
-          },
-          {
-            id: 'OP-104',
-            fecha: addDaysISO(-30),
-            comitente: '112305',
-            cliente: 'Carlos R.',
-            tipo: 'Compra',
-            ticker: 'YMCXO',
-            nominales: 3000,
-            precio: 1.01,
-            moneda: 'USD',
-            origen: 'Bot Telegram',
-            nota: 'ON corporativa'
-          },
-          {
-            id: 'OP-105',
-            fecha: addDaysISO(-10),
-            comitente: '112305',
-            cliente: 'Carlos R.',
-            tipo: 'Compra',
-            ticker: 'S31E7',
-            nominales: 1200000,
-            precio: 1.21,
-            moneda: 'ARS',
-            origen: 'Manual',
-            nota: 'Tasa fija corta'
-          }
-        ]
-      };
-    }
-
-    let state = loadState();
-
-    function loadState() {
-      try {
-        const raw = localStorage.getItem(STORAGE_KEY);
-        if (raw) return JSON.parse(raw);
-      } catch (e) {}
-      const seed = getSeedData();
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(seed));
-      return seed;
-    }
-
-    function saveState() {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-    }
+    let state = { clients: [], instruments: [], operations: [] };
 
     function getWebhookUrl() {
       return localStorage.getItem(WEBHOOK_KEY) || '';
     }
 
-    function saveWebhookUrl() {
-      const url = document.getElementById('webhookUrlInput').value.trim();
-      localStorage.setItem(WEBHOOK_KEY, url);
-      updateSyncStatus();
-      showToast(url ? 'URL de conexión guardada' : 'Modo local activado');
+    function getSessionPassword() {
+      return sessionStorage.getItem(SESSION_PWD_KEY) || '';
     }
 
-    function updateSyncStatus() {
+    async function callBackend(payload) {
       const url = getWebhookUrl();
-      const badge = document.getElementById('syncBadge');
-      const text = document.getElementById('syncText');
-      document.getElementById('webhookUrlInput').value = url;
-      if (url) {
-        badge.classList.add('live');
-        text.textContent = 'Conectado a Hoja';
-      } else {
-        badge.classList.remove('live');
-        text.textContent = 'Modo Demo Local';
+      const password = getSessionPassword();
+      if (!url || !password) throw new Error('No autenticado');
+
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify({ ...payload, password })
+      });
+
+      const json = await res.json();
+      if (!json.ok) {
+        throw new Error(json.error || 'Error de autenticación');
       }
+      return json.data;
+    }
+
+    async function handleUnlock(e) {
+      e.preventDefault();
+      const pwdInput = document.getElementById('crmPassword');
+      const urlInput = document.getElementById('loginWebhookUrl');
+      const errEl = document.getElementById('lockError');
+      const btn = document.getElementById('unlockBtn');
+
+      const url = urlInput.value.trim();
+      const password = pwdInput.value;
+
+      if (!url || !password) return;
+
+      errEl.textContent = '';
+      btn.disabled = true;
+      btn.textContent = 'Verificando...';
+
+      try {
+        localStorage.setItem(WEBHOOK_KEY, url);
+        sessionStorage.setItem(SESSION_PWD_KEY, password);
+
+        const data = await callBackend({ action: 'sync' });
+        state = data || { clients: [], instruments: [], operations: [] };
+
+        document.getElementById('lockScreen').style.display = 'none';
+        document.getElementById('appShell').classList.add('unlocked');
+        document.getElementById('webhookUrlInput').value = url;
+        renderAll();
+      } catch (err) {
+        sessionStorage.removeItem(SESSION_PWD_KEY);
+        errEl.textContent = 'Contraseña incorrecta o URL de Apps Script inválida.';
+        pwdInput.select();
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Ingresar al CRM';
+      }
+    }
+
+    function lockCrm() {
+      sessionStorage.removeItem(SESSION_PWD_KEY);
+      state = { clients: [], instruments: [], operations: [] };
+      document.getElementById('crmPassword').value = '';
+      document.getElementById('appShell').classList.remove('unlocked');
+      document.getElementById('lockScreen').style.display = 'flex';
     }
 
     async function syncFromBackend() {
-      const url = getWebhookUrl();
-      if (!url) {
-        renderAll();
-        showToast('Vista actualizada en modo local');
-        return;
-      }
       try {
-        const res = await fetch(url);
-        const data = await res.json();
-        if (data && data.clients && data.instruments && data.operations) {
-          state = data;
-          saveState();
-          renderAll();
-          showToast('Datos sincronizados desde Google Sheets');
-        } else {
-          showToast('Respuesta recibida, revisa el formato JSON del script');
-        }
+        const data = await callBackend({ action: 'sync' });
+        state = data;
+        renderAll();
+        showToast('Datos actualizados desde Google Sheets');
       } catch (err) {
-        showToast('No se pudo conectar con el Apps Script');
+        showToast('Error al sincronizar. Volvé a iniciar sesión.');
       }
     }
 
-    async function pushOperationToBackend(op) {
-      const url = getWebhookUrl();
-      if (!url) return;
-      try {
-        await fetch(url, {
-          method: 'POST',
-          mode: 'no-cors',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ action: 'add_operation', operation: op })
-        });
-      } catch (e) {}
+    function updateEndpointUrl() {
+      const url = document.getElementById('webhookUrlInput').value.trim();
+      localStorage.setItem(WEBHOOK_KEY, url);
+      showToast('URL actualizada');
     }
 
     function daysUntil(dateStr) {
@@ -1707,95 +1489,83 @@
 
     async function handleTicketSubmit(e) {
       e.preventDefault();
-      const comitente = document.getElementById('opComitente').value.trim();
-      const cliente = document.getElementById('opCliente').value.trim();
-      const tipo = document.getElementById('opTipo').value;
-      const ticker = document.getElementById('opTicker').value.trim().toUpperCase();
-      const nominales = Number(document.getElementById('opNominales').value);
-      const precio = Number(document.getElementById('opPrecio').value);
-      const fecha = document.getElementById('opFecha').value;
-      const moneda = document.getElementById('opMoneda').value;
-      const nota = document.getElementById('opNota').value.trim();
-
-      if (!state.clients.some(c => String(c.comitente) === comitente)) {
-        state.clients.push({
-          comitente,
-          nombre: cliente,
-          perfil: 'Moderado',
-          whatsapp: '',
-          liqArs: 0,
-          liqUsd: 0,
-          notas: 'Creado automáticamente desde carga de boleto.'
-        });
-      }
-
       const op = {
-        id: 'OP-' + Date.now().toString().slice(-5),
-        fecha,
-        comitente,
-        cliente,
-        tipo,
-        ticker,
-        nominales,
-        precio,
-        moneda,
+        id: 'OP-' + Date.now().toString().slice(-6),
+        fecha: document.getElementById('opFecha').value,
+        comitente: document.getElementById('opComitente').value.trim(),
+        cliente: document.getElementById('opCliente').value.trim(),
+        tipo: document.getElementById('opTipo').value,
+        ticker: document.getElementById('opTicker').value.trim().toUpperCase(),
+        nominales: Number(document.getElementById('opNominales').value),
+        precio: Number(document.getElementById('opPrecio').value),
+        moneda: document.getElementById('opMoneda').value,
         origen: 'Manual',
-        nota
+        nota: document.getElementById('opNota').value.trim()
       };
 
-      state.operations.push(op);
-      saveState();
-      await pushOperationToBackend(op);
-
-      e.target.reset();
-      document.getElementById('opFecha').value = new Date().toISOString().slice(0, 10);
-      renderAll();
-      showToast(`Operación de ${cliente} (${ticker}) registrada`);
+      try {
+        const data = await callBackend({ action: 'add_operation', operation: op });
+        state = data;
+        e.target.reset();
+        document.getElementById('opFecha').value = new Date().toISOString().slice(0, 10);
+        renderAll();
+        showToast(`Operación de ${op.cliente} (${op.ticker}) guardada`);
+      } catch (err) {
+        showToast('Error al guardar en la hoja');
+      }
     }
 
-    function openNewClientModal() {
-      document.getElementById('newClientModal').classList.add('open');
-    }
+    function openNewClientModal() { document.getElementById('newClientModal').classList.add('open'); }
 
-    function handleNewClient(e) {
+    async function handleNewClient(e) {
       e.preventDefault();
-      const comitente = document.getElementById('cliComitente').value.trim();
-      const nombre = document.getElementById('cliNombre').value.trim();
-      const perfil = document.getElementById('cliPerfil').value;
-      const whatsapp = document.getElementById('cliWhatsapp').value.trim();
-      const liqArs = Number(document.getElementById('cliLiqArs').value || 0);
-      const liqUsd = Number(document.getElementById('cliLiqUsd').value || 0);
-      const notas = document.getElementById('cliNotas').value.trim();
+      const client = {
+        comitente: document.getElementById('cliComitente').value.trim(),
+        nombre: document.getElementById('cliNombre').value.trim(),
+        perfil: document.getElementById('cliPerfil').value,
+        whatsapp: document.getElementById('cliWhatsapp').value.trim(),
+        liqArs: Number(document.getElementById('cliLiqArs').value || 0),
+        liqUsd: Number(document.getElementById('cliLiqUsd').value || 0),
+        notas: document.getElementById('cliNotas').value.trim()
+      };
 
-      state.clients.push({ comitente, nombre, perfil, whatsapp, liqArs, liqUsd, notas });
-      saveState();
-      closeModal('newClientModal');
-      e.target.reset();
-      renderAll();
-      showToast(`Cliente ${nombre} agregado`);
+      try {
+        const data = await callBackend({ action: 'add_client', client });
+        state = data;
+        closeModal('newClientModal');
+        e.target.reset();
+        renderAll();
+        showToast(`Cliente ${client.nombre} guardado`);
+      } catch (err) {
+        showToast('Error al guardar cliente');
+      }
     }
 
-    function openNewInstrumentModal() {
-      document.getElementById('newInstrumentModal').classList.add('open');
-    }
+    function openNewInstrumentModal() { document.getElementById('newInstrumentModal').classList.add('open'); }
 
-    function handleNewInstrument(e) {
+    async function handleNewInstrument(e) {
       e.preventDefault();
-      const ticker = document.getElementById('instTicker').value.trim().toUpperCase();
-      const descripcion = document.getElementById('instDesc').value.trim();
-      const tipo = document.getElementById('instTipo').value;
-      const tasa = document.getElementById('instTasa').value;
-      const moneda = document.getElementById('instMoneda').value;
-      const precio = Number(document.getElementById('instPrecio').value || 1);
-      const vto = document.getElementById('instVto').value;
-      const cupon = document.getElementById('instCupon').value;
+      const instrument = {
+        ticker: document.getElementById('instTicker').value.trim().toUpperCase(),
+        descripcion: document.getElementById('instDesc').value.trim(),
+        tipo: document.getElementById('instTipo').value,
+        tasa: document.getElementById('instTasa').value,
+        moneda: document.getElementById('instMoneda').value,
+        precio: Number(document.getElementById('instPrecio').value || 1),
+        vto: document.getElementById('instVto').value,
+        cupon: document.getElementById('instCupon').value
+      };
 
-      state.instruments.push({ ticker, descripcion, tipo, tasa, moneda, vto, cupon, precio });
-      saveState();
-      closeModal('newInstrumentModal');
-      e.target.reset();
-      renderAll();
-      showToast(`Instrumento ${ticker} agregado`);
+      try {
+        const data = await callBackend({ action: 'add_instrument', instrument });
+        state = data;
+        closeModal('newInstrumentModal');
+        e.target.reset();
+        renderAll();
+        showToast(`Instrumento ${instrument.ticker} guardado`);
+      } catch (err) {
+        showToast('Error al guardar instrumento');
+      }
     }
 
     function openQuickTicketModal() {
@@ -1803,16 +1573,7 @@
       document.getElementById('opComitente').focus();
     }
 
-    function closeModal(id) {
-      document.getElementById(id).classList.remove('open');
-    }
-
-    function resetDemoData() {
-      state = getSeedData();
-      saveState();
-      renderAll();
-      showToast('Datos de ejemplo restaurados');
-    }
+    function closeModal(id) { document.getElementById(id).classList.remove('open'); }
 
     function switchView(viewName) {
       const titles = {
@@ -1820,7 +1581,7 @@
         clientes: ['Clientes & Liquidez', 'Directorio, perfil de riesgo, liquidez disponible y tenencias'],
         operaciones: ['Carga de Boleto & Libro de Operaciones', 'Registra compras, ventas, cupones o rescates en segundos'],
         instrumentos: ['Catálogo de Instrumentos', 'Fechas de vencimiento, próximos cupones y tipo de tasa'],
-        conexion: ['Bot & Conexión con Google Sheets', 'Vincula tu Web App de Apps Script sin límites de filas']
+        conexion: ['Bot & Conexión con Google Sheets', 'Endpoint autenticado en Google Apps Script']
       };
 
       document.querySelectorAll('.view-section').forEach(el => {
@@ -1844,7 +1605,6 @@
     }
 
     function renderAll() {
-      updateSyncStatus();
       refreshDatalists();
       renderRadar();
       renderClients();
@@ -1853,7 +1613,11 @@
     }
 
     document.getElementById('opFecha').value = new Date().toISOString().slice(0, 10);
-    renderAll();
+    const savedUrl = getWebhookUrl();
+    if (savedUrl) {
+      document.getElementById('loginWebhookUrl').value = savedUrl;
+    }
+    setTimeout(() => document.getElementById('crmPassword')?.focus(), 50);
   </script>
 </body>
 </html>
