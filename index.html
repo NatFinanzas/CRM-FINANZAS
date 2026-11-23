@@ -359,7 +359,33 @@
 
     td { padding: 12px 14px; border-bottom: 1px solid var(--cr-border); vertical-align: middle; }
     tr:last-child td { border-bottom: 0; }
-    tr:hover td { background: #fbf2df; }
+    tr.clickable-row { cursor: pointer; }
+    tr.clickable-row:hover td { background: #fbf2df; }
+
+    .submenu-row td {
+      background: #f8eed8;
+      padding: 12px 18px;
+    }
+
+    .submenu-box {
+      border-left: 3px solid var(--bl);
+      padding-left: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .submenu-client-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      background: var(--cr-card);
+      border: 1px solid var(--cr-border);
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-size: 12.5px;
+    }
 
     .num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
 
@@ -627,8 +653,8 @@
     <div class="main-wrap">
       <header class="topbar">
         <div>
-          <h1 id="pageTitle" class="page-title">Radar de Vencimientos y Cupones</h1>
-          <div id="pageSubtitle" class="page-subtitle">Control diario de LECAPs, rentas, amortizaciones y liquidez</div>
+          <h1 id="pageTitle" class="page-title">Radar de Cupones y Vencimientos</h1>
+          <div id="pageSubtitle" class="page-subtitle">Control diario de rentas de ONs, cupones, vencimientos y liquidez</div>
         </div>
         <div class="topbar-actions">
           <button class="btn btn-secondary btn-sm" onclick="syncFromBackend()">Actualizar</button>
@@ -642,11 +668,12 @@
         <section id="view-radar" class="view-section">
           <div class="kpi-grid" id="kpiGrid"></div>
 
+          <!-- Principal arriba: Próximos Cupones y Amortizaciones -->
           <div class="card">
             <div class="card-header">
-              <div class="card-title">Próximos Vencimientos</div>
+              <div class="card-title">Próximos Cupones y Amortizaciones</div>
               <div class="filters-row" style="margin-bottom:0;">
-                <select id="filterMaturityWindow" onchange="renderRadar()">
+                <select id="filterCouponsWindow" onchange="renderRadar()">
                   <option value="9999">Todos los plazos</option>
                   <option value="7">Próximos 7 días</option>
                   <option value="15" selected>Próximos 15 días</option>
@@ -661,38 +688,38 @@
                   <tr>
                     <th>Alerta</th>
                     <th>Días</th>
-                    <th>Vencimiento</th>
+                    <th>Fecha Pago</th>
                     <th>Cliente / Comitente</th>
                     <th>Ticker</th>
-                    <th>Tipo</th>
+                    <th>Evento</th>
                     <th class="num">Nominales</th>
-                    <th class="num">Valuación Est.</th>
                     <th>Acción</th>
                   </tr>
                 </thead>
-                <tbody id="maturitiesTableBody"></tbody>
+                <tbody id="couponsTableBody"></tbody>
               </table>
             </div>
           </div>
 
+          <!-- Secundario abajo: Próximos Vencimientos y Liquidez -->
           <div class="grid-2">
             <div class="card" style="margin-bottom:0;">
               <div class="card-header">
-                <div class="card-title">Pagos de Cupones y Amortizaciones</div>
+                <div class="card-title">Próximos Vencimientos</div>
               </div>
               <div class="table-wrap">
                 <table>
                   <thead>
                     <tr>
-                      <th>Fecha</th>
+                      <th>Alerta</th>
                       <th>Días</th>
+                      <th>Vencimiento</th>
                       <th>Cliente</th>
                       <th>Ticker</th>
-                      <th>Evento</th>
-                      <th class="num">Nominales</th>
+                      <th class="num">Valuación Est.</th>
                     </tr>
                   </thead>
-                  <tbody id="couponsTableBody"></tbody>
+                  <tbody id="maturitiesTableBody"></tbody>
                 </table>
               </div>
             </div>
@@ -775,7 +802,7 @@
 
                 <div class="form-group">
                   <label for="opTicker">Ticker / Instrumento *</label>
-                  <input id="opTicker" class="input" type="text" required placeholder="Ej. SPY, S29E7, AL30" list="tickersList" />
+                  <input id="opTicker" class="input" type="text" required placeholder="Ej. SPY, S29E7, YM34O" list="tickersList" />
                   <datalist id="tickersList"></datalist>
                 </div>
 
@@ -846,34 +873,29 @@
         <section id="view-instrumentos" class="view-section" style="display:none;">
           <div class="card">
             <div class="card-header">
-              <div class="card-title">Cupones y Vencimientos por Cliente</div>
-              <div class="filters-row" style="margin-bottom:0;">
-                <select id="filterClientSchedule" onchange="renderClientSchedules()">
-                  <option value="">Todos los clientes</option>
-                </select>
-                <input id="searchClientSchedule" class="input" type="text" placeholder="Buscar cliente o ticker..." oninput="renderClientSchedules()" />
-              </div>
+              <div class="card-title">Cronograma por Instrumento (Clic para ver clientes)</div>
+              <input id="searchInstrumentTimeline" class="input" style="max-width:260px;" type="text" placeholder="Buscar ticker o evento..." oninput="renderInstrumentTimeline()" />
             </div>
             <div class="table-wrap">
               <table>
                 <thead>
                   <tr>
-                    <th>Fecha Cobro / Vto</th>
+                    <th>Fecha Próxima</th>
                     <th>Días</th>
-                    <th>Cliente</th>
                     <th>Ticker</th>
                     <th>Evento</th>
-                    <th class="num">Nominales</th>
+                    <th class="num">Clientes con Activo</th>
+                    <th>Detalle</th>
                   </tr>
                 </thead>
-                <tbody id="clientSchedulesTableBody"></tbody>
+                <tbody id="instrumentTimelineBody"></tbody>
               </table>
             </div>
           </div>
 
           <div class="card">
             <div class="card-header">
-              <div class="card-title">Catálogo de Instrumentos y Fechas Programadas</div>
+              <div class="card-title">Catálogo de Instrumentos</div>
               <button class="btn btn-primary btn-sm" onclick="openNewInstrumentModal()">+ Agregar Instrumento</button>
             </div>
             <div class="table-wrap">
@@ -904,7 +926,7 @@
             </div>
             <div class="card-body">
               <p style="font-size:13px; color:var(--mu); margin-bottom:14px;">
-                Enviá un PDF de resumen de cuenta para reconciliar tenencias y liquidez (incluye cuentas conjuntas <code>Y/O</code>), cargá operaciones en texto natural o cargá cupones futuros como <code>YM34O cada 6 meses desde 2027-03-15</code> o <code>cupon YM34O 2027-03-15, 2027-09-15</code>.
+                Enviá un PDF de resumen de cuenta para reconciliar tenencias y liquidez (incluye cuentas conjuntas <code>Y/O</code>), cargá operaciones en texto natural o enviá <code>/cupones</code> para ver las plantillas de pagos futuros.
               </p>
               <div class="form-grid" style="margin-bottom:14px;">
                 <div class="form-group full">
@@ -1068,6 +1090,7 @@
     const SESSION_PWD_KEY = 'crm_financiero_session_pwd_v2';
 
     let state = { clients: [], instruments: [], operations: [], couponSchedules: {} };
+    let expandedInstrumentKey = '';
 
     function getWebhookUrl() { return localStorage.getItem(WEBHOOK_KEY) || ''; }
     function getSessionPassword() { return sessionStorage.getItem(SESSION_PWD_KEY) || ''; }
@@ -1219,7 +1242,7 @@
 
         if (!agg[key]) {
           const allCoupons = getTickerCouponDates(tkr, inst.cupon);
-          const nextCup = allCoupons.find(d => (daysUntil(d) ?? -999) >= -2) || inst.cupon || allCoupons[0] || '';
+          const nextCup = allCoupons.find(d => (daysUntil(d) ?? -999) >= 0) || inst.cupon || allCoupons[0] || '';
           agg[key] = {
             comitente: com, cliente: cli.nombre, perfil: cli.perfil, whatsapp: cli.whatsapp,
             ticker: tkr, tipo: inst.tipo, tasa: inst.tasa, moneda: inst.moneda || op.moneda || 'ARS',
@@ -1250,7 +1273,7 @@
         const dates = getTickerCouponDates(h.ticker, h.cupon);
         dates.forEach(d => {
           const dias = daysUntil(d);
-          if (dias !== null && dias >= -2) {
+          if (dias !== null && dias >= 0) {
             events.push({
               fecha: d,
               dias,
@@ -1262,7 +1285,7 @@
             });
           }
         });
-        if (h.vto && h.diasVto !== null && h.diasVto >= -2) {
+        if (h.vto && h.diasVto !== null && h.diasVto >= 0) {
           events.push({
             fecha: h.vto,
             dias: h.diasVto,
@@ -1275,6 +1298,65 @@
         }
       });
       return events.sort((a, b) => a.dias - b.dias);
+    }
+
+    function getInstrumentTimelineItems(holdings) {
+      const byTicker = {};
+
+      holdings.forEach(h => {
+        if (!byTicker[h.ticker]) {
+          byTicker[h.ticker] = {
+            ticker: h.ticker,
+            tipo: h.tipo,
+            tasa: h.tasa,
+            vto: h.vto,
+            cupon: h.cupon,
+            allCoupons: getTickerCouponDates(h.ticker, h.cupon),
+            holders: []
+          };
+        }
+        byTicker[h.ticker].holders.push({
+          comitente: h.comitente,
+          cliente: h.cliente,
+          nominales: h.nominales
+        });
+      });
+
+      const items = [];
+      Object.values(byTicker).forEach(t => {
+        const futureCoupons = (t.allCoupons || [])
+          .map(d => ({ fecha: d, dias: daysUntil(d) }))
+          .filter(x => x.dias !== null && x.dias >= 0)
+          .sort((a, b) => a.dias - b.dias);
+
+        const nextCoupon = futureCoupons[0] || null;
+        const vtoDias = daysUntil(t.vto);
+        const hasVto = t.vto && vtoDias !== null && vtoDias >= 0;
+
+        let chosen = null;
+        if (nextCoupon && hasVto) {
+          chosen = nextCoupon.dias <= vtoDias
+            ? { fecha: nextCoupon.fecha, dias: nextCoupon.dias, evento: `Cupón (${t.tasa || 'Renta'})` }
+            : { fecha: t.vto, dias: vtoDias, evento: `Vencimiento (${t.tipo})` };
+        } else if (nextCoupon) {
+          chosen = { fecha: nextCoupon.fecha, dias: nextCoupon.dias, evento: `Cupón (${t.tasa || 'Renta'})` };
+        } else if (hasVto) {
+          chosen = { fecha: t.vto, dias: vtoDias, evento: `Vencimiento (${t.tipo})` };
+        }
+
+        if (chosen) {
+          items.push({
+            key: `${t.ticker}__${chosen.fecha}`,
+            ticker: t.ticker,
+            fecha: chosen.fecha,
+            dias: chosen.dias,
+            evento: chosen.evento,
+            holders: t.holders.sort((a, b) => a.cliente.localeCompare(b.cliente))
+          });
+        }
+      });
+
+      return items.sort((a, b) => a.dias - b.dias);
     }
 
     function alertBadge(days) {
@@ -1297,14 +1379,14 @@
           <div class="kpi-meta">${holdings.length} posiciones abiertas</div>
         </div>
         <div class="kpi-card">
+          <div class="kpi-label">Cupones en 15 Días</div>
+          <div class="kpi-value">${cupones15}</div>
+          <div class="kpi-meta">Rentas de ONs y pagos</div>
+        </div>
+        <div class="kpi-card">
           <div class="kpi-label">Vencen en 15 Días</div>
           <div class="kpi-value">${vtos15}</div>
           <div class="kpi-meta">LECAPs, bonos y vencimientos</div>
-        </div>
-        <div class="kpi-card">
-          <div class="kpi-label">Cupones en 15 Días</div>
-          <div class="kpi-value">${cupones15}</div>
-          <div class="kpi-meta">Rentas y amortizaciones</div>
         </div>
         <div class="kpi-card">
           <div class="kpi-label">Liquidez Disponible</div>
@@ -1318,49 +1400,50 @@
       const holdings = computeHoldings();
       renderKPIs(holdings);
 
-      const windowDays = Number(document.getElementById('filterMaturityWindow').value || 9999);
+      const windowDays = Number(document.getElementById('filterCouponsWindow').value || 9999);
       const q = (document.getElementById('searchRadar').value || '').toLowerCase().trim();
 
+      const upcomingCoupons = getClientPaymentEvents(holdings)
+        .filter(ev => ev.evento.startsWith('Cupón'))
+        .filter(ev => ev.dias >= 0 && ev.dias <= windowDays)
+        .filter(ev => !q || ev.cliente.toLowerCase().includes(q) || String(ev.comitente).toLowerCase().includes(q) || ev.ticker.toLowerCase().includes(q))
+        .sort((a, b) => a.dias - b.dias);
+
+      document.getElementById('couponsTableBody').innerHTML = upcomingCoupons.length
+        ? upcomingCoupons.map(ev => `
+          <tr>
+            <td>${alertBadge(ev.dias)}</td>
+            <td><strong>${ev.dias}d</strong></td>
+            <td>${ev.fecha}</td>
+            <td><strong>${ev.cliente}</strong> <span style="color:var(--mu);">(#${ev.comitente})</span></td>
+            <td><span class="badge badge-info">${ev.ticker}</span></td>
+            <td>${ev.evento}</td>
+            <td class="num">${formatNum(ev.nominales)}</td>
+            <td><button class="btn btn-secondary btn-sm" onclick="openClientDetail('${ev.comitente}')">Ver ficha</button></td>
+          </tr>
+        `).join('')
+        : '<tr><td colspan="8" style="text-align:center; color:var(--mu); padding:24px;">No hay cupones programados en el rango seleccionado.</td></tr>';
+
       const maturities = holdings
-        .filter(h => h.diasVto !== null && h.diasVto >= -2 && h.diasVto <= windowDays)
+        .filter(h => h.diasVto !== null && h.diasVto >= 0)
         .filter(h => !q || h.cliente.toLowerCase().includes(q) || String(h.comitente).toLowerCase().includes(q) || h.ticker.toLowerCase().includes(q))
         .sort((a, b) => a.diasVto - b.diasVto);
 
       document.getElementById('maturitiesTableBody').innerHTML = maturities.length
         ? maturities.map(m => `
-          <tr>
+          <tr class="clickable-row" onclick="openClientDetail('${m.comitente}')">
             <td>${alertBadge(m.diasVto)}</td>
             <td><strong>${m.diasVto}d</strong></td>
             <td>${m.vto}</td>
-            <td><strong>${m.cliente}</strong> <span style="color:var(--mu);">(#${m.comitente})</span></td>
+            <td>${m.cliente}</td>
             <td><span class="badge badge-info">${m.ticker}</span></td>
-            <td>${m.tipo}</td>
-            <td class="num">${formatNum(m.nominales)}</td>
             <td class="num"><strong>${formatMoney(m.valuacion, m.moneda)}</strong></td>
-            <td><button class="btn btn-secondary btn-sm" onclick="openClientDetail('${m.comitente}')">Ver ficha</button></td>
           </tr>
         `).join('')
-        : '<tr><td colspan="9" style="text-align:center; color:var(--mu); padding:24px;">No hay vencimientos en el rango seleccionado.</td></tr>';
-
-      const coupons = holdings
-        .filter(h => h.diasCupon !== null && h.diasCupon >= -2)
-        .sort((a, b) => a.diasCupon - b.diasCupon);
-
-      document.getElementById('couponsTableBody').innerHTML = coupons.length
-        ? coupons.map(c => `
-          <tr>
-            <td>${c.cupon}</td>
-            <td><strong>${c.diasCupon}d</strong></td>
-            <td>${c.cliente}</td>
-            <td><span class="badge badge-info">${c.ticker}</span></td>
-            <td>${c.tasa}</td>
-            <td class="num">${formatNum(c.nominales)}</td>
-          </tr>
-        `).join('')
-        : '<tr><td colspan="6" style="text-align:center; color:var(--mu); padding:18px;">Sin pagos próximos cargados.</td></tr>';
+        : '<tr><td colspan="6" style="text-align:center; color:var(--mu); padding:18px;">Sin vencimientos futuros cargados.</td></tr>';
 
       document.getElementById('liquidityTableBody').innerHTML = state.clients.map(c => `
-        <tr style="cursor:pointer;" onclick="openClientDetail('${c.comitente}')">
+        <tr class="clickable-row" onclick="openClientDetail('${c.comitente}')">
           <td><strong>${c.nombre}</strong></td>
           <td>#${c.comitente}</td>
           <td class="num">${formatMoney(c.liqArs, 'ARS')}</td>
@@ -1645,51 +1728,71 @@
       }
     }
 
-    function renderClientScheduleSelect() {
-      const sel = document.getElementById('filterClientSchedule');
-      if (!sel) return;
-      const currentVal = sel.value;
-      const options = ['<option value="">Todos los clientes</option>'].concat(
-        state.clients.map(c => `<option value="${c.comitente}">${c.nombre} (#${c.comitente})</option>`)
-      );
-      sel.innerHTML = options.join('');
-      if ([...sel.options].some(o => o.value === currentVal)) {
-        sel.value = currentVal;
-      }
+    function toggleInstrumentSubmenu(key) {
+      expandedInstrumentKey = expandedInstrumentKey === key ? '' : key;
+      renderInstrumentTimeline();
     }
 
-    function renderClientSchedules() {
+    function renderInstrumentTimeline() {
       const holdings = computeHoldings();
-      const allEvents = getClientPaymentEvents(holdings);
-      const selectedCom = (document.getElementById('filterClientSchedule')?.value || '').trim();
-      const q = (document.getElementById('searchClientSchedule')?.value || '').toLowerCase().trim();
+      const q = (document.getElementById('searchInstrumentTimeline')?.value || '').toLowerCase().trim();
 
-      const filtered = allEvents.filter(ev => {
-        const matchCom = !selectedCom || String(ev.comitente) === selectedCom;
-        const matchQ = !q ||
-          String(ev.cliente).toLowerCase().includes(q) ||
-          String(ev.comitente).toLowerCase().includes(q) ||
-          String(ev.ticker).toLowerCase().includes(q);
-        return matchCom && matchQ;
+      const items = getInstrumentTimelineItems(holdings).filter(item => {
+        if (!q) return true;
+        return item.ticker.toLowerCase().includes(q) || item.evento.toLowerCase().includes(q);
       });
 
-      document.getElementById('clientSchedulesTableBody').innerHTML = filtered.length
-        ? filtered.map(ev => `
-          <tr>
-            <td><strong>${ev.fecha}</strong></td>
-            <td>${ev.dias}d</td>
-            <td><a href="javascript:void(0)" onclick="openClientDetail('${ev.comitente}')" style="color:var(--bl); font-weight:600; text-decoration:none;">${ev.cliente}</a> <span style="color:var(--mu);">(#${ev.comitente})</span></td>
-            <td><span class="badge badge-info">${ev.ticker}</span></td>
-            <td>${ev.evento}</td>
-            <td class="num">${formatNum(ev.nominales)}</td>
+      if (!items.length) {
+        document.getElementById('instrumentTimelineBody').innerHTML =
+          '<tr><td colspan="6" style="text-align:center; color:var(--mu); padding:20px;">No hay eventos próximos para mostrar.</td></tr>';
+        return;
+      }
+
+      const htmlRows = [];
+      items.forEach(item => {
+        const isOpen = expandedInstrumentKey === item.key;
+        htmlRows.push(`
+          <tr class="clickable-row" onclick="toggleInstrumentSubmenu('${item.key}')">
+            <td><strong>${item.fecha}</strong></td>
+            <td><strong>${item.dias}d</strong></td>
+            <td><span class="badge badge-info">${item.ticker}</span></td>
+            <td>${item.evento}</td>
+            <td class="num"><strong>${item.holders.length}</strong></td>
+            <td><span class="badge ${isOpen ? 'badge-info' : 'badge-neutral'}">${isOpen ? 'Ocultar clientes ▲' : 'Ver clientes ▼'}</span></td>
           </tr>
-        `).join('')
-        : '<tr><td colspan="6" style="text-align:center; color:var(--mu); padding:20px;">No hay cupones ni vencimientos cargados para el filtro seleccionado.</td></tr>';
+        `);
+
+        if (isOpen) {
+          const clientCards = item.holders.map(h => `
+            <div class="submenu-client-item">
+              <div>
+                <strong>${h.cliente}</strong> <span style="color:var(--mu);">(#${h.comitente})</span>
+              </div>
+              <div style="display:flex; align-items:center; gap:10px;">
+                <span><strong>${formatNum(h.nominales)}</strong> nom.</span>
+                <button class="btn btn-secondary btn-sm" onclick="event.stopPropagation(); openClientDetail('${h.comitente}')">Ficha</button>
+              </div>
+            </div>
+          `).join('');
+
+          htmlRows.push(`
+            <tr class="submenu-row">
+              <td colspan="6">
+                <div class="submenu-box">
+                  <div style="font-size:12px; font-weight:700; color:var(--bl);">Clientes con ${item.ticker}</div>
+                  ${clientCards}
+                </div>
+              </td>
+            </tr>
+          `);
+        }
+      });
+
+      document.getElementById('instrumentTimelineBody').innerHTML = htmlRows.join('');
     }
 
     function renderInstruments() {
-      renderClientScheduleSelect();
-      renderClientSchedules();
+      renderInstrumentTimeline();
 
       document.getElementById('instrumentsTableBody').innerHTML = state.instruments.map(i => {
         const sched = getTickerCouponDates(i.ticker, i.cupon);
@@ -1818,10 +1921,10 @@
 
     function switchView(viewName) {
       const titles = {
-        radar: ['Radar de Vencimientos y Cupones', 'Control diario de LECAPs, rentas, amortizaciones y liquidez'],
+        radar: ['Radar de Cupones y Vencimientos', 'Control diario de rentas de ONs, cupones, vencimientos y liquidez'],
         clientes: ['Clientes & Liquidez', 'Directorio, perfil de riesgo, liquidez disponible y tenencias'],
         operaciones: ['Operaciones & Ajustes', 'Cargá, editá o eliminá operaciones con impacto directo en tenencias'],
-        instrumentos: ['Instrumentos & Cupones', 'Fechas por cliente, vencimientos y cronogramas futuros'],
+        instrumentos: ['Instrumentos & Cupones', 'Cronograma por instrumento con desplegable de clientes y vencimientos'],
         conexion: ['Bot & Conexión con Google Sheets', 'Reconciliación por PDF y endpoint autenticado']
       };
 
