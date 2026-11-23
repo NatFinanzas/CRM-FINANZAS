@@ -3,50 +3,47 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CRM Financiero | Asesoría & Carteras</title>
+  <title>CRM Financiero | Natanael Fernández</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg-app: #f4f7fb;
-      --bg-surface: #ffffff;
-      --bg-subtle: #eef2f7;
-      --text-main: #0f172a;
-      --text-muted: #64748b;
-      --border: #e2e8f0;
-      --primary: #0f4c81;
-      --primary-hover: #0a355c;
-      --primary-soft: #e0eefb;
-      --accent: #0d9488;
-      --danger: #dc2626;
+      --cr: #fef7ea;
+      --cr-card: #fffcf5;
+      --cr-border: #e5dac5;
+      --nv: #081a33;
+      --nv2: #050f20;
+      --bl: #234f91;
+      --bl-hover: #1a3c70;
+      --lb: #a9c3e8;
+      --mu: #6c7a91;
+      --tx: #0b1a30;
+      --ac: #4a7fc0;
+      --danger: #b91c1c;
       --danger-soft: #fee2e2;
-      --warning: #d97706;
+      --warning: #b45309;
       --warning-soft: #fef3c7;
-      --success: #16a34a;
+      --success: #15803d;
       --success-soft: #dcfce7;
-      --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.05);
-      --shadow-md: 0 8px 24px rgba(15, 23, 42, 0.06);
-      --radius-sm: 8px;
-      --radius-md: 12px;
-      --radius-lg: 16px;
-      --sidebar-w: 248px;
+      --sidebar-w: 256px;
       --bottom-nav-h: 64px;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      background: var(--bg-app);
-      color: var(--text-main);
-      line-height: 1.45;
+      font-family: 'Inter', system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+      background: var(--cr);
+      color: var(--tx);
+      line-height: 1.55;
       -webkit-font-smoothing: antialiased;
     }
 
     h1, h2, h3, .brand-title {
-      font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
-      letter-spacing: -0.02em;
+      font-family: 'Newsreader', Georgia, "Times New Roman", serif;
+      font-weight: 400;
+      letter-spacing: -0.01em;
     }
 
     /* Lock Screen */
@@ -56,31 +53,39 @@
       align-items: center;
       justify-content: center;
       padding: 20px;
-      background: linear-gradient(160deg, #eef4fa 0%, #f8fafc 55%, #e6f4f1 100%);
+      background: var(--nv);
+      color: #fff;
     }
 
     .lock-card {
       width: 100%;
-      max-width: 410px;
-      background: var(--bg-surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      padding: 28px 24px;
-      box-shadow: var(--shadow-md);
+      max-width: 420px;
+      background: var(--nv2);
+      border: 1px solid #233b5e;
+      border-radius: 14px;
+      padding: 30px 26px;
     }
 
     .lock-header {
       display: flex;
       align-items: center;
       gap: 12px;
-      margin-bottom: 18px;
+      margin-bottom: 20px;
     }
+
+    .lock-card label { color: var(--lb); }
+    .lock-card .input {
+      background: #081a33;
+      color: #fff;
+      border-color: #2b4468;
+    }
+    .lock-card .input::placeholder { color: #7e8da6; }
 
     .lock-error {
       margin-top: 10px;
       font-size: 12px;
       font-weight: 600;
-      color: var(--danger);
+      color: #fca5a5;
       min-height: 18px;
     }
 
@@ -88,11 +93,12 @@
     .app-shell { display: none; min-height: 100vh; }
     .app-shell.unlocked { display: flex; }
 
-    /* Sidebar (Desktop) */
+    /* Sidebar (Navy Theme like natanaelfz.com.ar dark bands) */
     .sidebar {
       width: var(--sidebar-w);
-      background: var(--bg-surface);
-      border-right: 1px solid var(--border);
+      background: var(--nv);
+      color: #fff;
+      border-right: 1px solid #1b2f4d;
       display: flex;
       flex-direction: column;
       position: fixed;
@@ -103,46 +109,47 @@
     }
 
     .brand {
-      padding: 20px 20px 16px;
-      border-bottom: 1px solid var(--border);
+      padding: 22px 20px 18px;
+      border-bottom: 1px solid #1b2f4d;
       display: flex;
       align-items: center;
       gap: 12px;
     }
 
     .brand-logo {
-      width: 38px;
-      height: 38px;
+      width: 40px;
+      height: 40px;
       border-radius: 10px;
-      background: linear-gradient(135deg, var(--primary), var(--accent));
+      background: var(--bl);
+      border: 1px solid var(--lb);
       color: #fff;
       display: grid;
       place-items: center;
-      font-weight: 700;
-      font-size: 16px;
+      font-family: 'Newsreader', Georgia, serif;
+      font-size: 18px;
       flex-shrink: 0;
     }
 
-    .brand-title { font-size: 16px; font-weight: 700; color: var(--text-main); }
-    .brand-sub { font-size: 11px; color: var(--text-muted); font-weight: 500; }
+    .brand-title { font-size: 19px; color: #fff; line-height: 1.15; }
+    .brand-sub { font-size: 10px; letter-spacing: 1.8px; text-transform: uppercase; color: var(--lb); margin-top: 3px; }
 
     .nav-list {
-      padding: 14px 12px;
+      padding: 16px 12px;
       display: flex;
       flex-direction: column;
-      gap: 4px;
+      gap: 6px;
       flex: 1;
     }
 
     .nav-btn {
       width: 100%;
-      border: 0;
+      border: 1px solid transparent;
       background: transparent;
-      color: var(--text-muted);
+      color: var(--lb);
       padding: 11px 14px;
-      border-radius: var(--radius-sm);
+      border-radius: 8px;
       font-family: inherit;
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 500;
       display: flex;
       align-items: center;
@@ -152,14 +159,15 @@
       transition: all 0.15s ease;
     }
 
-    .nav-btn:hover { background: var(--bg-subtle); color: var(--text-main); }
-    .nav-btn.active { background: var(--primary-soft); color: var(--primary); font-weight: 600; }
+    .nav-btn:hover { background: rgba(255,255,255,0.06); color: #fff; }
+    .nav-btn.active { background: var(--bl); color: #fff; border-color: var(--ac); font-weight: 600; }
 
     .sidebar-footer {
-      padding: 14px 16px;
-      border-top: 1px solid var(--border);
+      padding: 16px;
+      background: var(--nv2);
+      border-top: 1px solid #1b2f4d;
       font-size: 12px;
-      color: var(--text-muted);
+      color: var(--mu);
       display: flex;
       flex-direction: column;
       gap: 8px;
@@ -173,12 +181,12 @@
       border-radius: 999px;
       font-size: 11px;
       font-weight: 600;
-      background: var(--success-soft);
-      color: var(--success);
+      background: rgba(169, 195, 232, 0.14);
+      color: var(--lb);
       width: fit-content;
     }
 
-    .dot { width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+    .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--lb); }
 
     /* Main Content */
     .main-wrap {
@@ -190,10 +198,9 @@
     }
 
     .topbar {
-      background: rgba(255, 255, 255, 0.9);
-      backdrop-filter: blur(10px);
-      border-bottom: 1px solid var(--border);
-      padding: 14px 28px;
+      background: var(--cr);
+      border-bottom: 1px solid var(--cr-border);
+      padding: 16px 28px;
       position: sticky;
       top: 0;
       z-index: 20;
@@ -204,22 +211,22 @@
       flex-wrap: wrap;
     }
 
-    .page-title { font-size: 20px; font-weight: 700; }
-    .page-subtitle { font-size: 12px; color: var(--text-muted); }
+    .page-title { font-size: 28px; line-height: 1.15; color: var(--tx); }
+    .page-subtitle { font-size: 12px; color: var(--mu); margin-top: 2px; }
     .topbar-actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
 
     .content {
-      padding: 24px 28px 40px;
-      max-width: 1440px;
+      padding: 24px 28px 44px;
+      max-width: 1400px;
       width: 100%;
       margin: 0 auto;
     }
 
     /* Buttons & Badges */
     .btn {
-      border: 1px solid transparent;
-      border-radius: var(--radius-sm);
-      padding: 9px 14px;
+      border: 1.5px solid transparent;
+      border-radius: 8px;
+      padding: 9px 15px;
       font-family: inherit;
       font-size: 13px;
       font-weight: 600;
@@ -233,23 +240,39 @@
     }
 
     .btn:disabled { opacity: 0.6; cursor: not-allowed; }
-    .btn-primary { background: var(--primary); color: #fff; }
-    .btn-primary:hover:not(:disabled) { background: var(--primary-hover); }
+    .btn-primary { background: var(--bl); color: #fff; border-color: var(--bl); }
+    .btn-primary:hover:not(:disabled) { background: var(--bl-hover); border-color: var(--bl-hover); }
 
     .btn-secondary {
-      background: var(--bg-surface);
-      color: var(--text-main);
-      border-color: var(--border);
-      box-shadow: var(--shadow-sm);
+      background: var(--cr-card);
+      color: var(--tx);
+      border-color: var(--cr-border);
+    }
+    .btn-secondary:hover:not(:disabled) { background: #f5ebd6; }
+
+    .sidebar .btn-secondary {
+      background: transparent;
+      color: var(--lb);
+      border-color: #2b4468;
+    }
+    .sidebar .btn-secondary:hover:not(:disabled) {
+      background: rgba(255,255,255,0.06);
+      color: #fff;
     }
 
-    .btn-secondary:hover:not(:disabled) { background: var(--bg-subtle); }
+    .btn-danger {
+      background: var(--danger-soft);
+      color: var(--danger);
+      border-color: #fca5a5;
+    }
+    .btn-danger:hover:not(:disabled) { background: #fecaca; }
+
     .btn-sm { padding: 6px 10px; font-size: 12px; }
 
     .badge {
       display: inline-flex;
       align-items: center;
-      padding: 3px 8px;
+      padding: 3px 9px;
       border-radius: 999px;
       font-size: 11px;
       font-weight: 600;
@@ -259,8 +282,8 @@
     .badge-danger { background: var(--danger-soft); color: var(--danger); }
     .badge-warning { background: var(--warning-soft); color: var(--warning); }
     .badge-success { background: var(--success-soft); color: var(--success); }
-    .badge-info { background: var(--primary-soft); color: var(--primary); }
-    .badge-neutral { background: var(--bg-subtle); color: var(--text-muted); }
+    .badge-info { background: rgba(35, 79, 145, 0.12); color: var(--bl); }
+    .badge-neutral { background: #efe4cf; color: var(--mu); }
 
     /* KPI Grid */
     .kpi-grid {
@@ -271,24 +294,29 @@
     }
 
     .kpi-card {
-      background: var(--bg-surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-md);
+      background: var(--cr-card);
+      border: 1px solid var(--cr-border);
+      border-radius: 12px;
       padding: 18px 20px;
-      box-shadow: var(--shadow-sm);
     }
 
     .kpi-label {
-      font-size: 12px;
-      font-weight: 600;
-      color: var(--text-muted);
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--mu);
       text-transform: uppercase;
-      letter-spacing: 0.04em;
+      letter-spacing: 0.08em;
       margin-bottom: 8px;
     }
 
-    .kpi-value { font-size: 24px; font-weight: 700; color: var(--text-main); margin-bottom: 4px; }
-    .kpi-meta { font-size: 12px; color: var(--text-muted); }
+    .kpi-value {
+      font-family: 'Newsreader', Georgia, serif;
+      font-size: 28px;
+      color: var(--bl);
+      line-height: 1.15;
+      margin-bottom: 4px;
+    }
+    .kpi-meta { font-size: 12px; color: var(--mu); }
 
     /* Cards & Tables */
     .grid-2 {
@@ -299,25 +327,25 @@
     }
 
     .card {
-      background: var(--bg-surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-md);
-      box-shadow: var(--shadow-sm);
+      background: var(--cr-card);
+      border: 1px solid var(--cr-border);
+      border-radius: 12px;
       overflow: hidden;
       margin-bottom: 20px;
     }
 
     .card-header {
       padding: 16px 20px;
-      border-bottom: 1px solid var(--border);
+      border-bottom: 1px solid var(--cr-border);
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 12px;
       flex-wrap: wrap;
+      background: #fdf6e7;
     }
 
-    .card-title { font-size: 15px; font-weight: 700; }
+    .card-title { font-size: 22px; color: var(--tx); }
     .card-body { padding: 18px 20px; }
     .table-wrap { width: 100%; overflow-x: auto; }
 
@@ -329,16 +357,16 @@
       font-size: 11px;
       font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.04em;
-      color: var(--text-muted);
-      background: #f8fafc;
-      border-bottom: 1px solid var(--border);
+      letter-spacing: 0.06em;
+      color: var(--mu);
+      background: #f9efd9;
+      border-bottom: 1px solid var(--cr-border);
       white-space: nowrap;
     }
 
-    td { padding: 12px 14px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+    td { padding: 12px 14px; border-bottom: 1px solid var(--cr-border); vertical-align: middle; }
     tr:last-child td { border-bottom: 0; }
-    tr:hover td { background: #f8fafc; }
+    tr:hover td { background: #fbf2df; }
 
     .num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
 
@@ -347,18 +375,18 @@
 
     .input, select, textarea {
       width: 100%;
-      border: 1px solid var(--border);
-      border-radius: var(--radius-sm);
+      border: 1px solid var(--cr-border);
+      border-radius: 8px;
       padding: 9px 12px;
       font-family: inherit;
       font-size: 13px;
-      color: var(--text-main);
-      background: var(--bg-surface);
+      color: var(--tx);
+      background: #fff;
     }
 
     .input:focus, select:focus, textarea:focus {
-      outline: 2px solid var(--primary-soft);
-      border-color: var(--primary);
+      outline: 2px solid rgba(35, 79, 145, 0.2);
+      border-color: var(--bl);
     }
 
     .filters-row .input,
@@ -367,52 +395,51 @@
     .form-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
     .form-group { display: flex; flex-direction: column; gap: 5px; }
     .form-group.full { grid-column: 1 / -1; }
-    label { font-size: 12px; font-weight: 600; color: var(--text-main); }
+    label { font-size: 12px; font-weight: 600; color: var(--tx); }
 
     /* Client Cards */
     .client-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
 
     .client-card {
-      background: var(--bg-surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-md);
+      background: var(--cr-card);
+      border: 1px solid var(--cr-border);
+      border-radius: 12px;
       padding: 18px;
-      box-shadow: var(--shadow-sm);
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       gap: 14px;
       cursor: pointer;
-      transition: transform 0.14s ease, box-shadow 0.14s ease, border-color 0.14s ease;
+      transition: transform 0.14s ease, border-color 0.14s ease;
     }
 
     .client-card:hover {
       transform: translateY(-2px);
-      box-shadow: var(--shadow-md);
-      border-color: #cbd5e1;
+      border-color: var(--bl);
     }
 
     .client-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
-    .client-name { font-size: 16px; font-weight: 700; }
-    .client-comitente { font-size: 12px; color: var(--text-muted); font-weight: 500; }
+    .client-name { font-family: 'Newsreader', Georgia, serif; font-size: 22px; line-height: 1.15; color: var(--tx); }
+    .client-comitente { font-size: 12px; color: var(--mu); font-weight: 500; margin-top: 2px; }
 
     .client-metrics {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 10px;
-      background: #f8fafc;
+      background: #f8eed8;
+      border: 1px solid var(--cr-border);
       padding: 12px;
-      border-radius: var(--radius-sm);
+      border-radius: 8px;
     }
 
-    .metric-mini-label { font-size: 11px; color: var(--text-muted); }
-    .metric-mini-val { font-size: 14px; font-weight: 700; }
+    .metric-mini-label { font-size: 11px; color: var(--mu); }
+    .metric-mini-val { font-size: 14px; font-weight: 700; color: var(--tx); }
 
     /* Modal */
     .modal-backdrop {
       position: fixed;
       inset: 0;
-      background: rgba(15, 23, 42, 0.45);
+      background: rgba(5, 15, 32, 0.65);
       display: none;
       align-items: center;
       justify-content: center;
@@ -423,38 +450,38 @@
     .modal-backdrop.open { display: flex; }
 
     .modal {
-      background: var(--bg-surface);
-      border-radius: var(--radius-lg);
-      max-width: 720px;
+      background: var(--cr);
+      border: 1px solid var(--cr-border);
+      border-radius: 14px;
+      max-width: 760px;
       width: 100%;
       max-height: 88vh;
       overflow-y: auto;
-      box-shadow: 0 20px 50px rgba(15, 23, 42, 0.2);
     }
 
     .modal-header {
       padding: 18px 22px;
-      border-bottom: 1px solid var(--border);
+      border-bottom: 1px solid var(--cr-border);
       display: flex;
       justify-content: space-between;
       align-items: center;
       position: sticky;
       top: 0;
-      background: var(--bg-surface);
+      background: #fdf5e4;
       z-index: 2;
     }
 
     .modal-body { padding: 20px 22px; }
 
     .close-btn {
-      border: 0;
-      background: var(--bg-subtle);
+      border: 1px solid var(--cr-border);
+      background: #fff;
       width: 32px;
       height: 32px;
       border-radius: 8px;
       font-size: 18px;
       cursor: pointer;
-      color: var(--text-main);
+      color: var(--tx);
     }
 
     /* Toast */
@@ -462,13 +489,13 @@
       position: fixed;
       bottom: 24px;
       right: 24px;
-      background: var(--text-main);
+      background: var(--nv);
       color: #fff;
+      border: 1px solid var(--ac);
       padding: 12px 16px;
-      border-radius: var(--radius-sm);
+      border-radius: 8px;
       font-size: 13px;
       font-weight: 500;
-      box-shadow: var(--shadow-md);
       z-index: 80;
       opacity: 0;
       transform: translateY(10px);
@@ -478,7 +505,6 @@
 
     .toast.show { opacity: 1; transform: translateY(0); }
 
-    /* Bottom Nav (Mobile) */
     .bottom-nav { display: none; }
 
     @media (max-width: 1024px) {
@@ -504,39 +530,34 @@
         left: 0;
         right: 0;
         height: var(--bottom-nav-h);
-        background: var(--bg-surface);
-        border-top: 1px solid var(--border);
+        background: var(--nv);
+        border-top: 1px solid #1b2f4d;
         z-index: 40;
       }
 
       .bottom-nav button {
         border: 0;
         background: transparent;
-        color: var(--text-muted);
+        color: var(--lb);
         font-family: inherit;
         font-size: 11px;
         font-weight: 600;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        gap: 3px;
         cursor: pointer;
       }
 
-      .bottom-nav button.active { color: var(--primary); background: var(--primary-soft); }
+      .bottom-nav button.active { color: #fff; background: var(--bl); }
     }
   </style>
 </head>
 <body>
-  <!-- Pantalla de Acceso Validada en Servidor (compatible con Llavero de iCloud) -->
+  <!-- Pantalla de Acceso -->
   <div id="lockScreen" class="lock-screen">
     <div class="lock-card">
       <div class="lock-header">
         <div class="brand-logo">NF</div>
         <div>
           <div class="brand-title">CRM Carteras</div>
-          <div class="brand-sub">Acceso Privado de Asesor</div>
+          <div class="brand-sub">Natanael Fernández · Admin</div>
         </div>
       </div>
 
@@ -555,7 +576,7 @@
         </div>
 
         <div id="endpointSetupGroup" class="form-group" style="margin-bottom:14px;">
-          <label for="loginWebhookUrl">URL de Apps Script (se guarda en este dispositivo)</label>
+          <label for="loginWebhookUrl">URL de Apps Script (guardada en este dispositivo)</label>
           <input
             id="loginWebhookUrl"
             class="input"
@@ -578,7 +599,7 @@
         <div class="brand-logo">NF</div>
         <div>
           <div class="brand-title">CRM Carteras</div>
-          <div class="brand-sub">Asesoría Financiera</div>
+          <div class="brand-sub">Natanael Fernández</div>
         </div>
       </div>
 
@@ -590,7 +611,7 @@
           <span>Clientes & Liquidez</span>
         </button>
         <button class="nav-btn" data-view="operaciones" onclick="switchView('operaciones')">
-          <span>Cargar Boleto / Libro</span>
+          <span>Operaciones & Ajustes</span>
         </button>
         <button class="nav-btn" data-view="instrumentos" onclick="switchView('instrumentos')">
           <span>Instrumentos & Cupones</span>
@@ -603,9 +624,9 @@
       <div class="sidebar-footer">
         <div class="status-pill">
           <span class="dot"></span>
-          <span>Autenticado en Servidor</span>
+          <span>Modo Administrador</span>
         </div>
-        <div>Base sin tope de clientes</div>
+        <div>Edición y borrado habilitados</div>
         <button class="btn btn-secondary btn-sm" style="margin-top:4px;" onclick="lockCrm()">Cerrar Sesión</button>
       </div>
     </aside>
@@ -617,26 +638,20 @@
           <div id="pageSubtitle" class="page-subtitle">Control diario de LECAPs, rentas, amortizaciones y liquidez</div>
         </div>
         <div class="topbar-actions">
-          <button class="btn btn-secondary btn-sm" onclick="syncFromBackend()" title="Sincronizar con Google Sheets">
-            Actualizar
-          </button>
-          <button class="btn btn-primary btn-sm" onclick="openQuickTicketModal()">
-            + Nuevo Boleto
-          </button>
-          <button class="btn btn-secondary btn-sm" onclick="lockCrm()">
-            Salir
-          </button>
+          <button class="btn btn-secondary btn-sm" onclick="syncFromBackend()">Actualizar</button>
+          <button class="btn btn-primary btn-sm" onclick="openQuickTicketModal()">+ Nueva Operación</button>
+          <button class="btn btn-secondary btn-sm" onclick="lockCrm()">Salir</button>
         </div>
       </header>
 
       <main class="content">
-        <!-- VIEW 1: RADAR & VENCIMIENTOS -->
+        <!-- VIEW 1: RADAR -->
         <section id="view-radar" class="view-section">
           <div class="kpi-grid" id="kpiGrid"></div>
 
           <div class="card">
             <div class="card-header">
-              <div class="card-title">Próximos Vencimientos (LECAPs / Bonos / ONs)</div>
+              <div class="card-title">Próximos Vencimientos</div>
               <div class="filters-row" style="margin-bottom:0;">
                 <select id="filterMaturityWindow" onchange="renderRadar()">
                   <option value="9999">Todos los plazos</option>
@@ -736,20 +751,21 @@
         <section id="view-operaciones" class="view-section" style="display:none;">
           <div class="card">
             <div class="card-header">
-              <div class="card-title">Carga Rápida de Boleto de Operación</div>
+              <div class="card-title">Cargar o Editar Operación</div>
               <span class="badge badge-info">Sincronizado con Google Sheets</span>
             </div>
             <div class="card-body">
               <form id="ticketForm" class="form-grid" onsubmit="handleTicketSubmit(event)">
+                <input type="hidden" id="opEditId" value="" />
                 <div class="form-group">
                   <label for="opComitente">N° de Comitente *</label>
-                  <input id="opComitente" class="input" type="text" required placeholder="Ej. 104520" list="comitentesList" oninput="autofillClientByComitente()" />
+                  <input id="opComitente" class="input" type="text" required placeholder="Ej. 1402525" list="comitentesList" oninput="autofillClientByComitente()" />
                   <datalist id="comitentesList"></datalist>
                 </div>
 
                 <div class="form-group">
                   <label for="opCliente">Nombre / Apodo del Cliente *</label>
-                  <input id="opCliente" class="input" type="text" required placeholder="Ej. Pepito" />
+                  <input id="opCliente" class="input" type="text" required placeholder="Ej. Cielo Vargas" />
                 </div>
 
                 <div class="form-group">
@@ -766,18 +782,18 @@
 
                 <div class="form-group">
                   <label for="opTicker">Ticker / Instrumento *</label>
-                  <input id="opTicker" class="input" type="text" required placeholder="Ej. S31E7, AL30, TX26" list="tickersList" />
+                  <input id="opTicker" class="input" type="text" required placeholder="Ej. SPY, S29E7, AL30" list="tickersList" />
                   <datalist id="tickersList"></datalist>
                 </div>
 
                 <div class="form-group">
                   <label for="opNominales">Cantidad / Nominales *</label>
-                  <input id="opNominales" class="input" type="number" step="any" required placeholder="Ej. 10000" />
+                  <input id="opNominales" class="input" type="number" step="any" required placeholder="Ej. 10" />
                 </div>
 
                 <div class="form-group">
                   <label for="opPrecio">Precio Unitario *</label>
-                  <input id="opPrecio" class="input" type="number" step="any" required placeholder="Ej. 1.18" />
+                  <input id="opPrecio" class="input" type="number" step="any" required placeholder="Ej. 10200" />
                 </div>
 
                 <div class="form-group">
@@ -795,12 +811,12 @@
 
                 <div class="form-group">
                   <label for="opNota">N° Boleto / Nota</label>
-                  <input id="opNota" class="input" type="text" placeholder="Ej. Boleto #8821 - Renueva LECAP" />
+                  <input id="opNota" class="input" type="text" placeholder="Ej. Ajuste resumen o nota" />
                 </div>
 
                 <div class="form-group full" style="flex-direction:row; justify-content:flex-end; gap:10px; margin-top:6px;">
-                  <button type="reset" class="btn btn-secondary">Limpiar</button>
-                  <button type="submit" class="btn btn-primary">Registrar Operación</button>
+                  <button type="button" class="btn btn-secondary" onclick="resetOperationForm()">Cancelar / Limpiar</button>
+                  <button type="submit" id="opSubmitBtn" class="btn btn-primary">Registrar Operación</button>
                 </div>
               </form>
             </div>
@@ -808,8 +824,8 @@
 
           <div class="card">
             <div class="card-header">
-              <div class="card-title">Historial Reciente de Operaciones</div>
-              <input id="searchOp" class="input" style="max-width:240px;" type="text" placeholder="Filtrar por cliente o ticker..." oninput="renderOperations()" />
+              <div class="card-title">Historial de Operaciones</div>
+              <input id="searchOp" class="input" style="max-width:260px;" type="text" placeholder="Filtrar por cliente, comitente o ticker..." oninput="renderOperations()" />
             </div>
             <div class="table-wrap">
               <table>
@@ -824,6 +840,7 @@
                     <th class="num">Precio</th>
                     <th class="num">Monto Total</th>
                     <th>Origen</th>
+                    <th>Admin</th>
                   </tr>
                 </thead>
                 <tbody id="operationsTableBody"></tbody>
@@ -836,7 +853,7 @@
         <section id="view-instrumentos" class="view-section" style="display:none;">
           <div class="card">
             <div class="card-header">
-              <div class="card-title">Catálogo de Instrumentos (Vencimientos, Cupones y Tasas)</div>
+              <div class="card-title">Catálogo de Instrumentos</div>
               <button class="btn btn-primary btn-sm" onclick="openNewInstrumentModal()">+ Agregar Instrumento</button>
             </div>
             <div class="table-wrap">
@@ -859,15 +876,15 @@
           </div>
         </section>
 
-        <!-- VIEW 5: CONEXION BOT & HOJA -->
+        <!-- VIEW 5: CONEXION -->
         <section id="view-conexion" class="view-section" style="display:none;">
           <div class="card">
             <div class="card-header">
               <div class="card-title">Bot de Telegram & Endpoint de Google Apps Script</div>
             </div>
             <div class="card-body">
-              <p style="font-size:13px; color:var(--text-muted); margin-bottom:14px;">
-                Tu contraseña y los datos de tus clientes se validan directamente en Google Apps Script. Nunca se almacenan en el código público de GitHub.
+              <p style="font-size:13px; color:var(--mu); margin-bottom:14px;">
+                Enviá un PDF de resumen de cuenta para reconciliar automáticamente las tenencias y liquidez del cliente, o un texto natural como <code>CARLOS FERNANDEZ compro 10 nominales de SPY por 10200 cada nominal</code>.
               </p>
               <div class="form-grid" style="margin-bottom:14px;">
                 <div class="form-group full">
@@ -875,13 +892,9 @@
                   <input id="webhookUrlInput" class="input" type="url" />
                 </div>
               </div>
-              <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:18px;">
+              <div style="display:flex; gap:10px; flex-wrap:wrap;">
                 <button class="btn btn-primary" onclick="updateEndpointUrl()">Actualizar URL</button>
                 <button class="btn btn-secondary" onclick="syncFromBackend()">Sincronizar Ahora</button>
-              </div>
-              <div style="background:#f8fafc; border:1px solid var(--border); border-radius:10px; padding:14px; font-size:13px;">
-                <strong>Formato rápido para enviarle boletos a tu Bot de Telegram:</strong><br/>
-                <code>104520 | Compra | S31E7 | 25000 | 1.24 | Boleto #910</code>
               </div>
             </div>
           </div>
@@ -894,17 +907,17 @@
   <nav class="bottom-nav">
     <button class="active" data-view="radar" onclick="switchView('radar')">Radar</button>
     <button data-view="clientes" onclick="switchView('clientes')">Clientes</button>
-    <button data-view="operaciones" onclick="switchView('operaciones')">Boletos</button>
+    <button data-view="operaciones" onclick="switchView('operaciones')">Operaciones</button>
     <button data-view="instrumentos" onclick="switchView('instrumentos')">Activos</button>
   </nav>
 
-  <!-- Modals -->
+  <!-- Modal Ficha & Edición de Cliente -->
   <div id="clientModal" class="modal-backdrop" onclick="if(event.target===this) closeModal('clientModal')">
     <div class="modal">
       <div class="modal-header">
         <div>
-          <h3 id="modalClientTitle" style="font-size:17px;">Ficha del Cliente</h3>
-          <div id="modalClientSub" style="font-size:12px; color:var(--text-muted);"></div>
+          <h3 id="modalClientTitle" style="font-size:22px;">Ficha del Cliente</h3>
+          <div id="modalClientSub" style="font-size:12px; color:var(--mu);"></div>
         </div>
         <button class="close-btn" onclick="closeModal('clientModal')">&times;</button>
       </div>
@@ -912,10 +925,11 @@
     </div>
   </div>
 
+  <!-- Modal Nuevo Cliente -->
   <div id="newClientModal" class="modal-backdrop" onclick="if(event.target===this) closeModal('newClientModal')">
     <div class="modal">
       <div class="modal-header">
-        <h3 style="font-size:17px;">Agregar Cliente</h3>
+        <h3 style="font-size:22px;">Agregar Cliente</h3>
         <button class="close-btn" onclick="closeModal('newClientModal')">&times;</button>
       </div>
       <div class="modal-body">
@@ -926,7 +940,7 @@
           </div>
           <div class="form-group">
             <label>Nombre / Apodo *</label>
-            <input id="cliNombre" class="input" required placeholder="Ej. Lucía" />
+            <input id="cliNombre" class="input" required placeholder="Ej. Carlos Fernández" />
           </div>
           <div class="form-group">
             <label>Perfil de Riesgo</label>
@@ -950,7 +964,7 @@
           </div>
           <div class="form-group full">
             <label>Notas de Seguimiento</label>
-            <input id="cliNotas" class="input" placeholder="Ej. Prefiere LECAPs cortas y rotar a CER" />
+            <input id="cliNotas" class="input" placeholder="Notas del cliente" />
           </div>
           <div class="form-group full" style="flex-direction:row; justify-content:flex-end; gap:10px;">
             <button type="button" class="btn btn-secondary" onclick="closeModal('newClientModal')">Cancelar</button>
@@ -961,21 +975,22 @@
     </div>
   </div>
 
+  <!-- Modal Nuevo Instrumento -->
   <div id="newInstrumentModal" class="modal-backdrop" onclick="if(event.target===this) closeModal('newInstrumentModal')">
     <div class="modal">
       <div class="modal-header">
-        <h3 style="font-size:17px;">Agregar Instrumento al Catálogo</h3>
+        <h3 style="font-size:22px;">Agregar Instrumento al Catálogo</h3>
         <button class="close-btn" onclick="closeModal('newInstrumentModal')">&times;</button>
       </div>
       <div class="modal-body">
         <form id="newInstrumentForm" class="form-grid" onsubmit="handleNewInstrument(event)">
           <div class="form-group">
             <label>Ticker *</label>
-            <input id="instTicker" class="input" required placeholder="Ej. S29M7" />
+            <input id="instTicker" class="input" required placeholder="Ej. GOOGL" />
           </div>
           <div class="form-group">
             <label>Descripción *</label>
-            <input id="instDesc" class="input" required placeholder="Ej. LECAP Mayo 2027" />
+            <input id="instDesc" class="input" required placeholder="Ej. CEDEAR Alphabet" />
           </div>
           <div class="form-group">
             <label>Tipo</label>
@@ -985,7 +1000,7 @@
               <option value="Bono Soberano">Bono Soberano</option>
               <option value="ON">ON</option>
               <option value="FCI">FCI</option>
-              <option value="CEDEAR">CEDEAR</option>
+              <option value="CEDEAR" selected>CEDEAR</option>
             </select>
           </div>
           <div class="form-group">
@@ -995,7 +1010,7 @@
               <option value="CER / Variable">CER / Variable</option>
               <option value="Hard Dollar">Hard Dollar</option>
               <option value="Liquidez">Liquidez</option>
-              <option value="Renta Variable">Renta Variable</option>
+              <option value="Renta Variable" selected>Renta Variable</option>
             </select>
           </div>
           <div class="form-group">
@@ -1034,13 +1049,8 @@
 
     let state = { clients: [], instruments: [], operations: [] };
 
-    function getWebhookUrl() {
-      return localStorage.getItem(WEBHOOK_KEY) || '';
-    }
-
-    function getSessionPassword() {
-      return sessionStorage.getItem(SESSION_PWD_KEY) || '';
-    }
+    function getWebhookUrl() { return localStorage.getItem(WEBHOOK_KEY) || ''; }
+    function getSessionPassword() { return sessionStorage.getItem(SESSION_PWD_KEY) || ''; }
 
     async function callBackend(payload) {
       const url = getWebhookUrl();
@@ -1054,9 +1064,7 @@
       });
 
       const json = await res.json();
-      if (!json.ok) {
-        throw new Error(json.error || 'Error de autenticación');
-      }
+      if (!json.ok) throw new Error(json.error || 'Error en servidor');
       return json.data;
     }
 
@@ -1069,7 +1077,6 @@
 
       const url = urlInput.value.trim();
       const password = pwdInput.value;
-
       if (!url || !password) return;
 
       errEl.textContent = '';
@@ -1079,7 +1086,6 @@
       try {
         localStorage.setItem(WEBHOOK_KEY, url);
         sessionStorage.setItem(SESSION_PWD_KEY, password);
-
         const data = await callBackend({ action: 'sync' });
         state = data || { clients: [], instruments: [], operations: [] };
 
@@ -1107,8 +1113,7 @@
 
     async function syncFromBackend() {
       try {
-        const data = await callBackend({ action: 'sync' });
-        state = data;
+        state = await callBackend({ action: 'sync' });
         renderAll();
         showToast('Datos actualizados desde Google Sheets');
       } catch (err) {
@@ -1117,8 +1122,7 @@
     }
 
     function updateEndpointUrl() {
-      const url = document.getElementById('webhookUrlInput').value.trim();
-      localStorage.setItem(WEBHOOK_KEY, url);
+      localStorage.setItem(WEBHOOK_KEY, document.getElementById('webhookUrlInput').value.trim());
       showToast('URL actualizada');
     }
 
@@ -1140,7 +1144,7 @@
     }
 
     function formatNum(amount) {
-      return Number(amount || 0).toLocaleString('es-AR', { maximumFractionDigits: 2 });
+      return Number(amount || 0).toLocaleString('es-AR', { maximumFractionDigits: 4 });
     }
 
     function getInstrumentMap() {
@@ -1165,50 +1169,29 @@
         const tkr = String(op.ticker).trim().toUpperCase();
         const key = `${com}__${tkr}`;
         const inst = instMap[tkr] || {
-          ticker: tkr,
-          descripcion: tkr,
-          tipo: 'Activo',
-          tasa: '-',
-          moneda: op.moneda || 'ARS',
-          vto: '',
-          cupon: '',
-          precio: Number(op.precio || 1)
+          ticker: tkr, descripcion: tkr, tipo: 'Activo', tasa: '-',
+          moneda: op.moneda || 'ARS', vto: '', cupon: '', precio: Number(op.precio || 1)
         };
         const cli = cliMap[com] || {
-          comitente: com,
-          nombre: op.cliente || com,
-          perfil: '-',
-          whatsapp: ''
+          comitente: com, nombre: op.cliente || com, perfil: '-', whatsapp: ''
         };
 
         if (!agg[key]) {
           agg[key] = {
-            comitente: com,
-            cliente: cli.nombre,
-            perfil: cli.perfil,
-            whatsapp: cli.whatsapp,
-            ticker: tkr,
-            tipo: inst.tipo,
-            tasa: inst.tasa,
-            moneda: inst.moneda || op.moneda || 'ARS',
-            vto: inst.vto,
-            cupon: inst.cupon,
-            precioRef: Number(inst.precio || op.precio || 1),
-            nominales: 0
+            comitente: com, cliente: cli.nombre, perfil: cli.perfil, whatsapp: cli.whatsapp,
+            ticker: tkr, tipo: inst.tipo, tasa: inst.tasa, moneda: inst.moneda || op.moneda || 'ARS',
+            vto: inst.vto, cupon: inst.cupon, precioRef: Number(inst.precio || op.precio || 1), nominales: 0
           };
         }
 
         const nom = Number(op.nominales || 0);
         const tipoOp = String(op.tipo || '').toLowerCase();
-        if (tipoOp.includes('compra') || tipoOp.includes('suscrip')) {
-          agg[key].nominales += nom;
-        } else if (tipoOp.includes('venta') || tipoOp.includes('rescate')) {
-          agg[key].nominales -= nom;
-        }
+        if (tipoOp.includes('compra') || tipoOp.includes('suscrip')) agg[key].nominales += nom;
+        else if (tipoOp.includes('venta') || tipoOp.includes('rescate')) agg[key].nominales -= nom;
       });
 
       return Object.values(agg)
-        .filter(h => h.nominales > 0)
+        .filter(h => h.nominales > 0.0001)
         .map(h => ({
           ...h,
           valuacion: h.nominales * h.precioRef,
@@ -1248,7 +1231,7 @@
         </div>
         <div class="kpi-card">
           <div class="kpi-label">Liquidez Disponible</div>
-          <div class="kpi-value" style="font-size:19px;">${formatMoney(totalLiqArs, 'ARS')}</div>
+          <div class="kpi-value" style="font-size:22px;">${formatMoney(totalLiqArs, 'ARS')}</div>
           <div class="kpi-meta">+ ${formatMoney(totalLiqUsd, 'USD')} en dólares</div>
         </div>
       `;
@@ -1263,34 +1246,24 @@
 
       const maturities = holdings
         .filter(h => h.diasVto !== null && h.diasVto >= -2 && h.diasVto <= windowDays)
-        .filter(h => {
-          if (!q) return true;
-          return (
-            h.cliente.toLowerCase().includes(q) ||
-            String(h.comitente).toLowerCase().includes(q) ||
-            h.ticker.toLowerCase().includes(q)
-          );
-        })
+        .filter(h => !q || h.cliente.toLowerCase().includes(q) || String(h.comitente).toLowerCase().includes(q) || h.ticker.toLowerCase().includes(q))
         .sort((a, b) => a.diasVto - b.diasVto);
 
-      const matBody = document.getElementById('maturitiesTableBody');
-      if (!maturities.length) {
-        matBody.innerHTML = '<tr><td colspan="9" style="text-align:center; color:var(--text-muted); padding:24px;">No hay vencimientos en el rango seleccionado.</td></tr>';
-      } else {
-        matBody.innerHTML = maturities.map(m => `
+      document.getElementById('maturitiesTableBody').innerHTML = maturities.length
+        ? maturities.map(m => `
           <tr>
             <td>${alertBadge(m.diasVto)}</td>
             <td><strong>${m.diasVto}d</strong></td>
             <td>${m.vto}</td>
-            <td><strong>${m.cliente}</strong> <span style="color:var(--text-muted);">(#${m.comitente})</span></td>
+            <td><strong>${m.cliente}</strong> <span style="color:var(--mu);">(#${m.comitente})</span></td>
             <td><span class="badge badge-info">${m.ticker}</span></td>
             <td>${m.tipo}</td>
             <td class="num">${formatNum(m.nominales)}</td>
             <td class="num"><strong>${formatMoney(m.valuacion, m.moneda)}</strong></td>
             <td><button class="btn btn-secondary btn-sm" onclick="openClientDetail('${m.comitente}')">Ver ficha</button></td>
           </tr>
-        `).join('');
-      }
+        `).join('')
+        : '<tr><td colspan="9" style="text-align:center; color:var(--mu); padding:24px;">No hay vencimientos en el rango seleccionado.</td></tr>';
 
       const coupons = holdings
         .filter(h => h.diasCupon !== null && h.diasCupon >= -2)
@@ -1307,7 +1280,7 @@
             <td class="num">${formatNum(c.nominales)}</td>
           </tr>
         `).join('')
-        : '<tr><td colspan="6" style="text-align:center; color:var(--text-muted); padding:18px;">Sin pagos próximos cargados.</td></tr>';
+        : '<tr><td colspan="6" style="text-align:center; color:var(--mu); padding:18px;">Sin pagos próximos cargados.</td></tr>';
 
       document.getElementById('liquidityTableBody').innerHTML = state.clients.map(c => `
         <tr style="cursor:pointer;" onclick="openClientDetail('${c.comitente}')">
@@ -1345,7 +1318,7 @@
                 </div>
                 <span class="badge badge-info">${c.perfil}</span>
               </div>
-              <p style="font-size:12px; color:var(--text-muted); margin-top:10px;">
+              <p style="font-size:12px; color:var(--mu); margin-top:10px;">
                 ${c.notas || 'Sin notas registradas.'}
               </p>
             </div>
@@ -1390,23 +1363,47 @@
             <td class="num"><strong>${formatMoney(h.valuacion, h.moneda)}</strong></td>
           </tr>
         `).join('')
-        : '<tr><td colspan="5" style="text-align:center; color:var(--text-muted);">Sin posiciones abiertas</td></tr>';
+        : '<tr><td colspan="5" style="text-align:center; color:var(--mu);">Sin posiciones abiertas</td></tr>';
 
       document.getElementById('modalClientBody').innerHTML = `
-        <div class="kpi-grid" style="grid-template-columns: repeat(2, 1fr); margin-bottom:16px;">
-          <div class="kpi-card" style="padding:14px;">
-            <div class="kpi-label">Liquidez ARS</div>
-            <div class="kpi-value" style="font-size:18px;">${formatMoney(cli.liqArs, 'ARS')}</div>
+        <form onsubmit="handleUpdateClientInline(event, '${cli.comitente}')" class="form-grid" style="margin-bottom:18px; background:#fbf3e2; padding:14px; border-radius:10px; border:1px solid var(--cr-border);">
+          <div class="form-group">
+            <label>Nombre / Apodo</label>
+            <input id="editCliNombre" class="input" value="${cli.nombre}" required />
           </div>
-          <div class="kpi-card" style="padding:14px;">
-            <div class="kpi-label">Liquidez USD</div>
-            <div class="kpi-value" style="font-size:18px;">${formatMoney(cli.liqUsd, 'USD')}</div>
+          <div class="form-group">
+            <label>Perfil</label>
+            <select id="editCliPerfil">
+              <option value="Conservador" ${cli.perfil === 'Conservador' ? 'selected' : ''}>Conservador</option>
+              <option value="Moderado" ${cli.perfil === 'Moderado' ? 'selected' : ''}>Moderado</option>
+              <option value="Agresivo" ${cli.perfil === 'Agresivo' ? 'selected' : ''}>Agresivo</option>
+            </select>
           </div>
-        </div>
-        <p style="font-size:13px; background:#f8fafc; padding:12px; border-radius:8px; margin-bottom:16px;">
-          <strong>Nota:</strong> ${cli.notas || 'Sin notas.'}
-        </p>
-        <h4 style="font-size:14px; margin-bottom:10px;">Tenencias Activas</h4>
+          <div class="form-group">
+            <label>WhatsApp</label>
+            <input id="editCliWhatsapp" class="input" value="${cli.whatsapp || ''}" />
+          </div>
+          <div class="form-group">
+            <label>Liquidez ARS ($)</label>
+            <input id="editCliLiqArs" class="input" type="number" step="any" value="${cli.liqArs || 0}" />
+          </div>
+          <div class="form-group">
+            <label>Liquidez USD (US$)</label>
+            <input id="editCliLiqUsd" class="input" type="number" step="any" value="${cli.liqUsd || 0}" />
+          </div>
+          <div class="form-group">
+            <label>Notas</label>
+            <input id="editCliNotas" class="input" value="${cli.notas || ''}" />
+          </div>
+          <div class="form-group full" style="flex-direction:row; justify-content:space-between; align-items:center; gap:10px; margin-top:4px;">
+            <button type="button" class="btn btn-danger btn-sm" onclick="handleDeleteClient('${cli.comitente}', '${cli.nombre}')">
+              Eliminar Cliente y Operaciones
+            </button>
+            <button type="submit" class="btn btn-primary btn-sm">Guardar Cambios</button>
+          </div>
+        </form>
+
+        <h4 style="font-size:15px; margin-bottom:10px;">Tenencias Activas</h4>
         <div class="table-wrap">
           <table>
             <thead>
@@ -1426,6 +1423,47 @@
       document.getElementById('clientModal').classList.add('open');
     }
 
+    async function handleUpdateClientInline(e, comitente) {
+      e.preventDefault();
+      try {
+        state = await callBackend({
+          action: 'update_client',
+          client: {
+            comitente,
+            nombre: document.getElementById('editCliNombre').value.trim(),
+            perfil: document.getElementById('editCliPerfil').value,
+            whatsapp: document.getElementById('editCliWhatsapp').value.trim(),
+            liqArs: Number(document.getElementById('editCliLiqArs').value || 0),
+            liqUsd: Number(document.getElementById('editCliLiqUsd').value || 0),
+            notas: document.getElementById('editCliNotas').value.trim()
+          }
+        });
+        closeModal('clientModal');
+        renderAll();
+        showToast('Cliente actualizado');
+      } catch (err) {
+        showToast('Error al actualizar cliente');
+      }
+    }
+
+    async function handleDeleteClient(comitente, nombre) {
+      const ok = confirm(`¿Seguro que querés eliminar a "${nombre}" (#${comitente}) junto con todas sus operaciones y tenencias? Esta acción no se puede deshacer.`);
+      if (!ok) return;
+
+      try {
+        state = await callBackend({
+          action: 'delete_client',
+          comitente,
+          deleteOperations: true
+        });
+        closeModal('clientModal');
+        renderAll();
+        showToast(`Cliente ${nombre} eliminado`);
+      } catch (err) {
+        showToast('Error al eliminar cliente');
+      }
+    }
+
     function renderOperations() {
       const q = (document.getElementById('searchOp').value || '').toLowerCase().trim();
       const ops = [...state.operations]
@@ -1441,20 +1479,61 @@
 
       document.getElementById('operationsTableBody').innerHTML = ops.map(o => {
         const monto = Number(o.nominales || 0) * Number(o.precio || 0);
+        const isSell = String(o.tipo).toLowerCase().includes('venta') || String(o.tipo).toLowerCase().includes('rescate');
         return `
           <tr>
             <td>${o.fecha}</td>
             <td>#${o.comitente}</td>
             <td><strong>${o.cliente}</strong></td>
-            <td><span class="badge ${String(o.tipo).toLowerCase().includes('venta') || String(o.tipo).toLowerCase().includes('rescate') ? 'badge-warning' : 'badge-success'}">${o.tipo}</span></td>
+            <td><span class="badge ${isSell ? 'badge-warning' : 'badge-success'}">${o.tipo}</span></td>
             <td><span class="badge badge-info">${o.ticker}</span></td>
             <td class="num">${formatNum(o.nominales)}</td>
             <td class="num">${formatNum(o.precio)}</td>
             <td class="num"><strong>${formatMoney(monto, o.moneda || 'ARS')}</strong></td>
             <td><span class="badge badge-neutral">${o.origen || 'Manual'}</span></td>
+            <td style="white-space:nowrap;">
+              <button class="btn btn-secondary btn-sm" onclick="startEditOperation('${o.id}')">Editar</button>
+              <button class="btn btn-danger btn-sm" onclick="handleDeleteOperation('${o.id}')">Borrar</button>
+            </td>
           </tr>
         `;
       }).join('');
+    }
+
+    function startEditOperation(id) {
+      const op = state.operations.find(x => String(x.id) === String(id));
+      if (!op) return;
+      document.getElementById('opEditId').value = op.id;
+      document.getElementById('opComitente').value = op.comitente;
+      document.getElementById('opCliente').value = op.cliente;
+      document.getElementById('opTipo').value = op.tipo;
+      document.getElementById('opTicker').value = op.ticker;
+      document.getElementById('opNominales').value = op.nominales;
+      document.getElementById('opPrecio').value = op.precio;
+      document.getElementById('opFecha').value = op.fecha || new Date().toISOString().slice(0, 10);
+      document.getElementById('opMoneda').value = op.moneda || 'ARS';
+      document.getElementById('opNota').value = op.nota || '';
+      document.getElementById('opSubmitBtn').textContent = 'Guardar Cambios';
+      switchView('operaciones');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function resetOperationForm() {
+      document.getElementById('ticketForm').reset();
+      document.getElementById('opEditId').value = '';
+      document.getElementById('opFecha').value = new Date().toISOString().slice(0, 10);
+      document.getElementById('opSubmitBtn').textContent = 'Registrar Operación';
+    }
+
+    async function handleDeleteOperation(id) {
+      if (!confirm('¿Borrar esta operación?')) return;
+      try {
+        state = await callBackend({ action: 'delete_operation', id });
+        renderAll();
+        showToast('Operación eliminada');
+      } catch (err) {
+        showToast('Error al borrar operación');
+      }
     }
 
     function renderInstruments() {
@@ -1482,15 +1561,14 @@
     function autofillClientByComitente() {
       const com = document.getElementById('opComitente').value.trim();
       const found = state.clients.find(c => String(c.comitente) === com);
-      if (found) {
-        document.getElementById('opCliente').value = found.nombre;
-      }
+      if (found) document.getElementById('opCliente').value = found.nombre;
     }
 
     async function handleTicketSubmit(e) {
       e.preventDefault();
+      const editId = document.getElementById('opEditId').value.trim();
       const op = {
-        id: 'OP-' + Date.now().toString().slice(-6),
+        id: editId || ('OP-' + Date.now().toString().slice(-6)),
         fecha: document.getElementById('opFecha').value,
         comitente: document.getElementById('opComitente').value.trim(),
         cliente: document.getElementById('opCliente').value.trim(),
@@ -1499,19 +1577,20 @@
         nominales: Number(document.getElementById('opNominales').value),
         precio: Number(document.getElementById('opPrecio').value),
         moneda: document.getElementById('opMoneda').value,
-        origen: 'Manual',
+        origen: editId ? 'Editado Admin' : 'Manual',
         nota: document.getElementById('opNota').value.trim()
       };
 
       try {
-        const data = await callBackend({ action: 'add_operation', operation: op });
-        state = data;
-        e.target.reset();
-        document.getElementById('opFecha').value = new Date().toISOString().slice(0, 10);
+        state = await callBackend({
+          action: editId ? 'update_operation' : 'add_operation',
+          operation: op
+        });
+        resetOperationForm();
         renderAll();
-        showToast(`Operación de ${op.cliente} (${op.ticker}) guardada`);
+        showToast(editId ? 'Operación actualizada' : `Operación de ${op.cliente} (${op.ticker}) guardada`);
       } catch (err) {
-        showToast('Error al guardar en la hoja');
+        showToast('Error al guardar operación');
       }
     }
 
@@ -1530,8 +1609,7 @@
       };
 
       try {
-        const data = await callBackend({ action: 'add_client', client });
-        state = data;
+        state = await callBackend({ action: 'add_client', client });
         closeModal('newClientModal');
         e.target.reset();
         renderAll();
@@ -1557,8 +1635,7 @@
       };
 
       try {
-        const data = await callBackend({ action: 'add_instrument', instrument });
-        state = data;
+        state = await callBackend({ action: 'add_instrument', instrument });
         closeModal('newInstrumentModal');
         e.target.reset();
         renderAll();
@@ -1569,6 +1646,7 @@
     }
 
     function openQuickTicketModal() {
+      resetOperationForm();
       switchView('operaciones');
       document.getElementById('opComitente').focus();
     }
@@ -1579,9 +1657,9 @@
       const titles = {
         radar: ['Radar de Vencimientos y Cupones', 'Control diario de LECAPs, rentas, amortizaciones y liquidez'],
         clientes: ['Clientes & Liquidez', 'Directorio, perfil de riesgo, liquidez disponible y tenencias'],
-        operaciones: ['Carga de Boleto & Libro de Operaciones', 'Registra compras, ventas, cupones o rescates en segundos'],
+        operaciones: ['Operaciones & Ajustes', 'Cargá, editá o eliminá operaciones con impacto directo en tenencias'],
         instrumentos: ['Catálogo de Instrumentos', 'Fechas de vencimiento, próximos cupones y tipo de tasa'],
-        conexion: ['Bot & Conexión con Google Sheets', 'Endpoint autenticado en Google Apps Script']
+        conexion: ['Bot & Conexión con Google Sheets', 'Reconciliación por PDF y endpoint autenticado']
       };
 
       document.querySelectorAll('.view-section').forEach(el => {
@@ -1614,9 +1692,7 @@
 
     document.getElementById('opFecha').value = new Date().toISOString().slice(0, 10);
     const savedUrl = getWebhookUrl();
-    if (savedUrl) {
-      document.getElementById('loginWebhookUrl').value = savedUrl;
-    }
+    if (savedUrl) document.getElementById('loginWebhookUrl').value = savedUrl;
     setTimeout(() => document.getElementById('crmPassword')?.focus(), 50);
   </script>
 </body>
