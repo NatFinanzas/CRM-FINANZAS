@@ -93,7 +93,7 @@
     .app-shell { display: none; min-height: 100vh; }
     .app-shell.unlocked { display: flex; }
 
-    /* Sidebar (Navy Theme like natanaelfz.com.ar dark bands) */
+    /* Sidebar */
     .sidebar {
       width: var(--sidebar-w);
       background: var(--nv);
@@ -214,13 +214,6 @@
     .page-title { font-size: 28px; line-height: 1.15; color: var(--tx); }
     .page-subtitle { font-size: 12px; color: var(--mu); margin-top: 2px; }
     .topbar-actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
-
-    .content {
-      padding: 24px 28px 44px;
-      max-width: 1400px;
-      width: 100%;
-      margin: 0 auto;
-    }
 
     /* Buttons & Badges */
     .btn {
@@ -453,7 +446,7 @@
       background: var(--cr);
       border: 1px solid var(--cr-border);
       border-radius: 14px;
-      max-width: 760px;
+      max-width: 780px;
       width: 100%;
       max-height: 88vh;
       overflow-y: auto;
@@ -849,11 +842,38 @@
           </div>
         </section>
 
-        <!-- VIEW 4: INSTRUMENTOS -->
+        <!-- VIEW 4: INSTRUMENTOS & CUPONES -->
         <section id="view-instrumentos" class="view-section" style="display:none;">
           <div class="card">
             <div class="card-header">
-              <div class="card-title">Catálogo de Instrumentos</div>
+              <div class="card-title">Cupones y Vencimientos por Cliente</div>
+              <div class="filters-row" style="margin-bottom:0;">
+                <select id="filterClientSchedule" onchange="renderClientSchedules()">
+                  <option value="">Todos los clientes</option>
+                </select>
+                <input id="searchClientSchedule" class="input" type="text" placeholder="Buscar cliente o ticker..." oninput="renderClientSchedules()" />
+              </div>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Fecha Cobro / Vto</th>
+                    <th>Días</th>
+                    <th>Cliente</th>
+                    <th>Ticker</th>
+                    <th>Evento</th>
+                    <th class="num">Nominales</th>
+                  </tr>
+                </thead>
+                <tbody id="clientSchedulesTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">Catálogo de Instrumentos y Fechas Programadas</div>
               <button class="btn btn-primary btn-sm" onclick="openNewInstrumentModal()">+ Agregar Instrumento</button>
             </div>
             <div class="table-wrap">
@@ -866,7 +886,7 @@
                     <th>Tasa</th>
                     <th>Moneda</th>
                     <th>Vencimiento</th>
-                    <th>Próx. Cupón</th>
+                    <th>Próx. Cupón / Cronograma</th>
                     <th class="num">Precio Ref.</th>
                   </tr>
                 </thead>
@@ -884,7 +904,7 @@
             </div>
             <div class="card-body">
               <p style="font-size:13px; color:var(--mu); margin-bottom:14px;">
-                Enviá un PDF de resumen de cuenta para reconciliar automáticamente las tenencias y liquidez del cliente, o un texto natural como <code>CARLOS FERNANDEZ compro 10 nominales de SPY por 10200 cada nominal</code>.
+                Enviá un PDF de resumen de cuenta para reconciliar tenencias y liquidez (incluye cuentas conjuntas <code>Y/O</code>), cargá operaciones en texto natural o cargá cupones futuros como <code>YM34O cada 6 meses desde 2027-03-15</code> o <code>cupon YM34O 2027-03-15, 2027-09-15</code>.
               </p>
               <div class="form-grid" style="margin-bottom:14px;">
                 <div class="form-group full">
@@ -986,11 +1006,11 @@
         <form id="newInstrumentForm" class="form-grid" onsubmit="handleNewInstrument(event)">
           <div class="form-group">
             <label>Ticker *</label>
-            <input id="instTicker" class="input" required placeholder="Ej. GOOGL" />
+            <input id="instTicker" class="input" required placeholder="Ej. YM34O" />
           </div>
           <div class="form-group">
             <label>Descripción *</label>
-            <input id="instDesc" class="input" required placeholder="Ej. CEDEAR Alphabet" />
+            <input id="instDesc" class="input" required placeholder="Ej. ON YPF 2034" />
           </div>
           <div class="form-group">
             <label>Tipo</label>
@@ -998,9 +1018,9 @@
               <option value="LECAP">LECAP</option>
               <option value="Bono CER">Bono CER</option>
               <option value="Bono Soberano">Bono Soberano</option>
-              <option value="ON">ON</option>
+              <option value="ON" selected>ON</option>
               <option value="FCI">FCI</option>
-              <option value="CEDEAR" selected>CEDEAR</option>
+              <option value="CEDEAR">CEDEAR</option>
             </select>
           </div>
           <div class="form-group">
@@ -1008,16 +1028,16 @@
             <select id="instTasa">
               <option value="Tasa Fija">Tasa Fija</option>
               <option value="CER / Variable">CER / Variable</option>
-              <option value="Hard Dollar">Hard Dollar</option>
+              <option value="Hard Dollar" selected>Hard Dollar</option>
               <option value="Liquidez">Liquidez</option>
-              <option value="Renta Variable" selected>Renta Variable</option>
+              <option value="Renta Variable">Renta Variable</option>
             </select>
           </div>
           <div class="form-group">
             <label>Moneda</label>
             <select id="instMoneda">
               <option value="ARS">ARS</option>
-              <option value="USD">USD</option>
+              <option value="USD" selected>USD</option>
             </select>
           </div>
           <div class="form-group">
@@ -1047,7 +1067,7 @@
     const WEBHOOK_KEY = 'crm_financiero_webhook_url_v2';
     const SESSION_PWD_KEY = 'crm_financiero_session_pwd_v2';
 
-    let state = { clients: [], instruments: [], operations: [] };
+    let state = { clients: [], instruments: [], operations: [], couponSchedules: {} };
 
     function getWebhookUrl() { return localStorage.getItem(WEBHOOK_KEY) || ''; }
     function getSessionPassword() { return sessionStorage.getItem(SESSION_PWD_KEY) || ''; }
@@ -1087,7 +1107,13 @@
         localStorage.setItem(WEBHOOK_KEY, url);
         sessionStorage.setItem(SESSION_PWD_KEY, password);
         const data = await callBackend({ action: 'sync' });
-        state = data || { clients: [], instruments: [], operations: [] };
+        state = {
+          clients: [],
+          instruments: [],
+          operations: [],
+          couponSchedules: {},
+          ...(data || {})
+        };
 
         document.getElementById('lockScreen').style.display = 'none';
         document.getElementById('appShell').classList.add('unlocked');
@@ -1105,7 +1131,7 @@
 
     function lockCrm() {
       sessionStorage.removeItem(SESSION_PWD_KEY);
-      state = { clients: [], instruments: [], operations: [] };
+      state = { clients: [], instruments: [], operations: [], couponSchedules: {} };
       document.getElementById('crmPassword').value = '';
       document.getElementById('appShell').classList.remove('unlocked');
       document.getElementById('lockScreen').style.display = 'flex';
@@ -1113,7 +1139,14 @@
 
     async function syncFromBackend() {
       try {
-        state = await callBackend({ action: 'sync' });
+        const data = await callBackend({ action: 'sync' });
+        state = {
+          clients: [],
+          instruments: [],
+          operations: [],
+          couponSchedules: {},
+          ...(data || {})
+        };
         renderAll();
         showToast('Datos actualizados desde Google Sheets');
       } catch (err) {
@@ -1159,6 +1192,14 @@
       return map;
     }
 
+    function getTickerCouponDates(ticker, fallbackDate) {
+      const tkr = String(ticker || '').trim().toUpperCase();
+      const schedules = state.couponSchedules || {};
+      const list = Array.isArray(schedules[tkr]) ? schedules[tkr].filter(Boolean) : [];
+      if (list.length) return [...list].sort();
+      return fallbackDate ? [fallbackDate] : [];
+    }
+
     function computeHoldings() {
       const instMap = getInstrumentMap();
       const cliMap = getClientMap();
@@ -1177,10 +1218,13 @@
         };
 
         if (!agg[key]) {
+          const allCoupons = getTickerCouponDates(tkr, inst.cupon);
+          const nextCup = allCoupons.find(d => (daysUntil(d) ?? -999) >= -2) || inst.cupon || allCoupons[0] || '';
           agg[key] = {
             comitente: com, cliente: cli.nombre, perfil: cli.perfil, whatsapp: cli.whatsapp,
             ticker: tkr, tipo: inst.tipo, tasa: inst.tasa, moneda: inst.moneda || op.moneda || 'ARS',
-            vto: inst.vto, cupon: inst.cupon, precioRef: Number(inst.precio || op.precio || 1), nominales: 0
+            vto: inst.vto, cupon: nextCup, allCoupons,
+            precioRef: Number(inst.precio || op.precio || 1), nominales: 0
           };
         }
 
@@ -1198,6 +1242,39 @@
           diasVto: daysUntil(h.vto),
           diasCupon: daysUntil(h.cupon)
         }));
+    }
+
+    function getClientPaymentEvents(holdings) {
+      const events = [];
+      holdings.forEach(h => {
+        const dates = getTickerCouponDates(h.ticker, h.cupon);
+        dates.forEach(d => {
+          const dias = daysUntil(d);
+          if (dias !== null && dias >= -2) {
+            events.push({
+              fecha: d,
+              dias,
+              comitente: h.comitente,
+              cliente: h.cliente,
+              ticker: h.ticker,
+              evento: `Cupón (${h.tasa || 'Renta'})`,
+              nominales: h.nominales
+            });
+          }
+        });
+        if (h.vto && h.diasVto !== null && h.diasVto >= -2) {
+          events.push({
+            fecha: h.vto,
+            dias: h.diasVto,
+            comitente: h.comitente,
+            cliente: h.cliente,
+            ticker: h.ticker,
+            evento: `Vencimiento (${h.tipo})`,
+            nominales: h.nominales
+          });
+        }
+      });
+      return events.sort((a, b) => a.dias - b.dias);
     }
 
     function alertBadge(days) {
@@ -1349,6 +1426,7 @@
       const cli = state.clients.find(c => String(c.comitente) === String(comitente));
       if (!cli) return;
       const holdings = computeHoldings().filter(h => String(h.comitente) === String(comitente));
+      const clientEvents = getClientPaymentEvents(holdings);
 
       document.getElementById('modalClientTitle').textContent = `${cli.nombre} — #${cli.comitente}`;
       document.getElementById('modalClientSub').textContent = `Perfil: ${cli.perfil} · WhatsApp: ${cli.whatsapp || 'No cargado'}`;
@@ -1364,6 +1442,18 @@
           </tr>
         `).join('')
         : '<tr><td colspan="5" style="text-align:center; color:var(--mu);">Sin posiciones abiertas</td></tr>';
+
+      const eventsHtml = clientEvents.length
+        ? clientEvents.map(ev => `
+          <tr>
+            <td><strong>${ev.fecha}</strong></td>
+            <td>${ev.dias}d</td>
+            <td><span class="badge badge-info">${ev.ticker}</span></td>
+            <td>${ev.evento}</td>
+            <td class="num">${formatNum(ev.nominales)}</td>
+          </tr>
+        `).join('')
+        : '<tr><td colspan="5" style="text-align:center; color:var(--mu);">Sin cupones o vencimientos próximos cargados para este cliente.</td></tr>';
 
       document.getElementById('modalClientBody').innerHTML = `
         <form onsubmit="handleUpdateClientInline(event, '${cli.comitente}')" class="form-grid" style="margin-bottom:18px; background:#fbf3e2; padding:14px; border-radius:10px; border:1px solid var(--cr-border);">
@@ -1403,6 +1493,22 @@
           </div>
         </form>
 
+        <h4 style="font-size:15px; margin-bottom:10px;">Próximos Cupones y Vencimientos del Cliente</h4>
+        <div class="table-wrap" style="margin-bottom:18px;">
+          <table>
+            <thead>
+              <tr>
+                <th>Fecha</th>
+                <th>Días</th>
+                <th>Ticker</th>
+                <th>Evento</th>
+                <th class="num">Nominales</th>
+              </tr>
+            </thead>
+            <tbody>${eventsHtml}</tbody>
+          </table>
+        </div>
+
         <h4 style="font-size:15px; margin-bottom:10px;">Tenencias Activas</h4>
         <div class="table-wrap">
           <table>
@@ -1426,7 +1532,7 @@
     async function handleUpdateClientInline(e, comitente) {
       e.preventDefault();
       try {
-        state = await callBackend({
+        const data = await callBackend({
           action: 'update_client',
           client: {
             comitente,
@@ -1438,6 +1544,7 @@
             notas: document.getElementById('editCliNotas').value.trim()
           }
         });
+        state = { clients: [], instruments: [], operations: [], couponSchedules: {}, ...(data || {}) };
         closeModal('clientModal');
         renderAll();
         showToast('Cliente actualizado');
@@ -1451,11 +1558,12 @@
       if (!ok) return;
 
       try {
-        state = await callBackend({
+        const data = await callBackend({
           action: 'delete_client',
           comitente,
           deleteOperations: true
         });
+        state = { clients: [], instruments: [], operations: [], couponSchedules: {}, ...(data || {}) };
         closeModal('clientModal');
         renderAll();
         showToast(`Cliente ${nombre} eliminado`);
@@ -1528,7 +1636,8 @@
     async function handleDeleteOperation(id) {
       if (!confirm('¿Borrar esta operación?')) return;
       try {
-        state = await callBackend({ action: 'delete_operation', id });
+        const data = await callBackend({ action: 'delete_operation', id });
+        state = { clients: [], instruments: [], operations: [], couponSchedules: {}, ...(data || {}) };
         renderAll();
         showToast('Operación eliminada');
       } catch (err) {
@@ -1536,19 +1645,70 @@
       }
     }
 
+    function renderClientScheduleSelect() {
+      const sel = document.getElementById('filterClientSchedule');
+      if (!sel) return;
+      const currentVal = sel.value;
+      const options = ['<option value="">Todos los clientes</option>'].concat(
+        state.clients.map(c => `<option value="${c.comitente}">${c.nombre} (#${c.comitente})</option>`)
+      );
+      sel.innerHTML = options.join('');
+      if ([...sel.options].some(o => o.value === currentVal)) {
+        sel.value = currentVal;
+      }
+    }
+
+    function renderClientSchedules() {
+      const holdings = computeHoldings();
+      const allEvents = getClientPaymentEvents(holdings);
+      const selectedCom = (document.getElementById('filterClientSchedule')?.value || '').trim();
+      const q = (document.getElementById('searchClientSchedule')?.value || '').toLowerCase().trim();
+
+      const filtered = allEvents.filter(ev => {
+        const matchCom = !selectedCom || String(ev.comitente) === selectedCom;
+        const matchQ = !q ||
+          String(ev.cliente).toLowerCase().includes(q) ||
+          String(ev.comitente).toLowerCase().includes(q) ||
+          String(ev.ticker).toLowerCase().includes(q);
+        return matchCom && matchQ;
+      });
+
+      document.getElementById('clientSchedulesTableBody').innerHTML = filtered.length
+        ? filtered.map(ev => `
+          <tr>
+            <td><strong>${ev.fecha}</strong></td>
+            <td>${ev.dias}d</td>
+            <td><a href="javascript:void(0)" onclick="openClientDetail('${ev.comitente}')" style="color:var(--bl); font-weight:600; text-decoration:none;">${ev.cliente}</a> <span style="color:var(--mu);">(#${ev.comitente})</span></td>
+            <td><span class="badge badge-info">${ev.ticker}</span></td>
+            <td>${ev.evento}</td>
+            <td class="num">${formatNum(ev.nominales)}</td>
+          </tr>
+        `).join('')
+        : '<tr><td colspan="6" style="text-align:center; color:var(--mu); padding:20px;">No hay cupones ni vencimientos cargados para el filtro seleccionado.</td></tr>';
+    }
+
     function renderInstruments() {
-      document.getElementById('instrumentsTableBody').innerHTML = state.instruments.map(i => `
-        <tr>
-          <td><strong>${i.ticker}</strong></td>
-          <td>${i.descripcion}</td>
-          <td>${i.tipo}</td>
-          <td>${i.tasa}</td>
-          <td>${i.moneda}</td>
-          <td>${i.vto || '-'}</td>
-          <td>${i.cupon || '-'}</td>
-          <td class="num">${formatNum(i.precio)}</td>
-        </tr>
-      `).join('');
+      renderClientScheduleSelect();
+      renderClientSchedules();
+
+      document.getElementById('instrumentsTableBody').innerHTML = state.instruments.map(i => {
+        const sched = getTickerCouponDates(i.ticker, i.cupon);
+        const schedLabel = sched.length > 1
+          ? `<strong>${i.cupon || sched[0]}</strong> <span style="color:var(--mu); font-size:11px;">(${sched.join(', ')})</span>`
+          : (i.cupon || '-');
+        return `
+          <tr>
+            <td><strong>${i.ticker}</strong></td>
+            <td>${i.descripcion}</td>
+            <td>${i.tipo}</td>
+            <td>${i.tasa}</td>
+            <td>${i.moneda}</td>
+            <td>${i.vto || '-'}</td>
+            <td>${schedLabel}</td>
+            <td class="num">${formatNum(i.precio)}</td>
+          </tr>
+        `;
+      }).join('');
     }
 
     function refreshDatalists() {
@@ -1582,10 +1742,11 @@
       };
 
       try {
-        state = await callBackend({
+        const data = await callBackend({
           action: editId ? 'update_operation' : 'add_operation',
           operation: op
         });
+        state = { clients: [], instruments: [], operations: [], couponSchedules: {}, ...(data || {}) };
         resetOperationForm();
         renderAll();
         showToast(editId ? 'Operación actualizada' : `Operación de ${op.cliente} (${op.ticker}) guardada`);
@@ -1609,7 +1770,8 @@
       };
 
       try {
-        state = await callBackend({ action: 'add_client', client });
+        const data = await callBackend({ action: 'add_client', client });
+        state = { clients: [], instruments: [], operations: [], couponSchedules: {}, ...(data || {}) };
         closeModal('newClientModal');
         e.target.reset();
         renderAll();
@@ -1635,7 +1797,8 @@
       };
 
       try {
-        state = await callBackend({ action: 'add_instrument', instrument });
+        const data = await callBackend({ action: 'add_instrument', instrument });
+        state = { clients: [], instruments: [], operations: [], couponSchedules: {}, ...(data || {}) };
         closeModal('newInstrumentModal');
         e.target.reset();
         renderAll();
@@ -1658,7 +1821,7 @@
         radar: ['Radar de Vencimientos y Cupones', 'Control diario de LECAPs, rentas, amortizaciones y liquidez'],
         clientes: ['Clientes & Liquidez', 'Directorio, perfil de riesgo, liquidez disponible y tenencias'],
         operaciones: ['Operaciones & Ajustes', 'Cargá, editá o eliminá operaciones con impacto directo en tenencias'],
-        instrumentos: ['Catálogo de Instrumentos', 'Fechas de vencimiento, próximos cupones y tipo de tasa'],
+        instrumentos: ['Instrumentos & Cupones', 'Fechas por cliente, vencimientos y cronogramas futuros'],
         conexion: ['Bot & Conexión con Google Sheets', 'Reconciliación por PDF y endpoint autenticado']
       };
 
